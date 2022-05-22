@@ -22,7 +22,11 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
-      listener: (context, state) => {},
+      listener: (context, state) {
+         if (state is BannedPatient) {
+          OurCubit.get(context).bannedPatient(state.message, context);
+        }
+      },
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           title: const Text('التفاصيل الطبية'),
@@ -38,7 +42,8 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
         ),
         body: ConditionalBuilder(
           condition: state is! LoadingGetMedicalDetails &&
-           OurCubit.get(context).medicalDetails != null,
+           OurCubit.get(context).medicalDetails != null
+           && state is! ErrorGetMedicalDetailsForPatient,
           builder:(context) =>  Container(
             color:const Color(0xff92cbdf),
             child: Padding(

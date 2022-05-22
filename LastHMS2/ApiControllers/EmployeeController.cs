@@ -108,13 +108,13 @@ namespace LastHMS2.ApiControllers
             var doctor = _context.Doctors.Find(id);
             if (!doctor.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             var workDays = await _context.Work_Days.Where(w => w.Doctor_Id == id).Select(s => new
             {
                 Day = s.Day.ToString(),
-                Start = s.Start_Hour.ToString("c"),
-                End = s.End_Hour.ToString("c"),
+                Start = s.Start_Hour.Hours >= 12 ? s.Start_Hour.Hours == 12 ? "12" + ":" + (s.Start_Hour.Minutes == 0 ? "00" : "30") + " PM" : s.Start_Hour.Hours - 12 + ":" + (s.Start_Hour.Minutes == 0 ? "00" : "30") + " PM" : s.Start_Hour.Hours == 0 ? "12" + ":" + (s.Start_Hour.Minutes == 0 ? "00" : "30") + " AM" : s.Start_Hour.Hours + ":" + (s.Start_Hour.Minutes == 0 ? "00" : "30") + " AM",
+                End = s.End_Hour.Hours >= 12 ? s.End_Hour.Hours == 12 ? "12" + ":" + (s.End_Hour.Minutes == 0 ? "00" : "30") + " PM" : s.End_Hour.Hours - 12 + ":" + (s.End_Hour.Minutes == 0 ? "00" : "30") + " PM" : s.End_Hour.Hours == 0 ? "12" + ":" + (s.End_Hour.Minutes == 0 ? "00" : "30") + " AM" : s.End_Hour.Hours + ":" + (s.End_Hour.Minutes == 0 ? "00" : "30") + " AM",
                 HourCount = s.End_Hour.Hours - s.Start_Hour.Hours
             }).ToListAsync();
             if (workDays.Count == 0)
@@ -131,7 +131,7 @@ namespace LastHMS2.ApiControllers
             var doctor = await _context.Doctors.FirstOrDefaultAsync(m => m.Doctor_Id == id);
             if (!doctor.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             var data = (from p in _context.Patients
                         join pre in _context.Previews
@@ -179,7 +179,7 @@ namespace LastHMS2.ApiControllers
                    {
                        Status = false,
                        active = false,
-                       Message = "لا يوجد أطباء في القسم",
+                       Message = "لم يعد لديك حساب في هذه المشفى",
                    }
                    );
             }
@@ -188,7 +188,7 @@ namespace LastHMS2.ApiControllers
             var doctors = await (from d in _context.Doctors
                                  join l in _context.Areas on d.Area_Id equals l.Area_Id
                                  join b in _context.Cities on d.Doctor_Birth_Place equals b.City_Id
-                                 where (d.Department_Id == dept.Department_Id && d.Active)
+                                 where (d.Department_Id == dept.Department_Id && d.Active && d.Doctor_Id != doc.Doctor_Id)
                                  select new
                                  {
                                      doctor_Full_Name = d.Doctor_Full_Name,
@@ -224,10 +224,19 @@ namespace LastHMS2.ApiControllers
         [HttpPost]
         public async Task<IActionResult> CreateDoctor([FromForm] IFormCollection fc, [FromQuery] DateTime birthDate, [FromQuery] DateTime hireDate, [FromQuery] List<String> phone)
         {                                               // ([FroBody]Doctor doctor)
-
+            var doc = _context.Doctors.Find(int.Parse(fc["id"]));
+            if (!doc.Active)
+            {
+                return Ok
+                   (new
+                   {
+                       Status = false,
+                       active = false,
+                       Message = "لم يعد لديك حساب في هذه المشفى",
+                   }
+                   );
+            }
             var dept = await _context.Departments.FirstOrDefaultAsync(d => d.Dept_Manager.Doctor_Id == int.Parse(fc["id"]));
-
-
             Doctor d = new Doctor()
             {
                 Doctor_First_Name = fc["firstName"].ToString(),
@@ -254,6 +263,7 @@ namespace LastHMS2.ApiControllers
                 return Ok(new
                 {
                     Status = false,
+                    active = true,
                     Message = "لقد تم إضافة هذا الطبيب مسبقاً"
                 });
             }
@@ -349,9 +359,9 @@ namespace LastHMS2.ApiControllers
             var doctor = _context.Doctors.Find(id);
             if (!doctor.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
-            var surgeries = await _context.Surgeries.Where(s => s.Doctor_Id == id).ToListAsync();
+            var surgeries = await _context.Surgeries.Where(s => s.Doctor_Id == id && s.Surgery_Date.Date >= DateTime.Now.Date).ToListAsync();
             if (surgeries.Count == 0)
                 return Ok(new { Status = false, Active = true, Message = "ليس لديك عمليات" });
             var sur = (from s in surgeries
@@ -520,7 +530,7 @@ namespace LastHMS2.ApiControllers
             var doctor = _context.Doctors.Find(int.Parse(fc["id"]));
             if (!doctor.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             TimeSpan t = TimeSpan.FromHours(int.Parse(fc["hour"])) + TimeSpan.FromMinutes(int.Parse(fc["minute"]));
             Surgery sr = new Surgery()
@@ -602,13 +612,13 @@ namespace LastHMS2.ApiControllers
             var doctor = _context.Doctors.Find(id);
             if (!doctor.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             // display all patients in the same hospital with a button to book a preview with the patient id 
             var doctorPreviews = await (from pre in _context.Previews
                                         join pat in _context.Patients
                                         on pre.Patient_Id equals pat.Patient_Id
-                                        where pre.Doctor_Id == id && pre.Preview_Date >= DateTime.Now
+                                        where pre.Doctor_Id == id && pre.Preview_Date.Date >= DateTime.Now.Date
                                         orderby pre.Preview_Date
                                         select new
                                         {
@@ -617,6 +627,7 @@ namespace LastHMS2.ApiControllers
                                             PatientName = pat.Patient_First_Name + " " + pat.Patient_Last_Name,
                                             PreviewDate = pre.Preview_Date.ToString("dd/MM/yyyy"),
                                             PreviewHour = pre.Preview_Date.ToString("hh:mm tt"),
+                                            exam = pre.ExaminationRecord,
                                             PatientPhoneNumber = _context.Patient_Phone_Numbers.Where(pn => pn.Patient_Id == pat.Patient_Id).ToList()
                                         }).ToListAsync();
             if (doctorPreviews.Count == 0)
@@ -754,6 +765,17 @@ namespace LastHMS2.ApiControllers
                 Message = "تم حجز الموعد بنجاح"
             });
         }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> AddExamination([FromForm] IFormCollection fc) //id(preview)
+        {
+            var preview = _context.Previews.Find(int.Parse(fc["id"]));
+            preview.ExaminationRecord = fc["exam"].ToString();
+            _context.Update(preview);
+            await _context.SaveChangesAsync();
+            return Ok(new { status = true, message = "تم إضافة التشخيص بنجاح" });
+        }
         #endregion // I am heeeeeeeeeeereeeeeeeeeeeeee
 
         #region MedicalDetails
@@ -831,7 +853,6 @@ namespace LastHMS2.ApiControllers
         public IActionResult DisplayAllAllergies()
         {
             var allergies = _context.Allergies.Select(a => new { id = a.Allergy_Id, name = a.Allergy_Name }).ToList();
-            //var diseases = _context.Diseases.Select(d=> new {id= d.Disease_Id , name = d.Disease_Name })
             return Ok(allergies);
         }
 
@@ -1108,7 +1129,7 @@ namespace LastHMS2.ApiControllers
             var doc = _context.Doctors.Find(id);
             if (!doc.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             var phone = await _context.Doctor_Phone_Numbers.Where(p => p.Doctor_Id == id).ToListAsync();
             var doctor = await (from d in _context.Doctors
@@ -1174,6 +1195,7 @@ namespace LastHMS2.ApiControllers
         }
         #endregion
 
+        [Route("[action]")]
         public async Task<IActionResult> DisplayDiseasesTypes()
         {
             var diseasesType = await _context.Diseases_Types.Select(d => new
@@ -1201,6 +1223,18 @@ namespace LastHMS2.ApiControllers
         [HttpPost]
         public async Task<IActionResult> CreateMedicalDetails([FromForm] IFormCollection fc, [FromQuery] List<string> allergies, [FromQuery] List<string> family, [FromQuery] List<string> chronic)
         {
+            var doc = _context.Doctors.Find(int.Parse(fc["docId"]));
+            if (!doc.Active)
+            {
+                return Ok
+                   (new
+                   {
+                       Status = false,
+                       active = false,
+                       Message = "لم يعد لديك حساب في هذه المشفى",
+                   }
+                   );
+            }
             Medical_Detail md = new Medical_Detail()
             {
                 MD_Patient_Blood_Type = fc["blood"].ToString(),
@@ -1266,12 +1300,7 @@ namespace LastHMS2.ApiControllers
 
         [Route("[action]")]
         public async Task<IActionResult> GetMedicalDetailsForUpdate([FromQuery] int id, [FromQuery] int medicalId)//docId
-        {
-            var doctor = _context.Doctors.Find(id);
-            if (!doctor.Active)
-            {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
-            }
+        {         
             var medical = _context.Medical_Details.Include(e => e.Patient).FirstOrDefault(m => m.Medical_Details_Id == medicalId);
 
             var allergies = await (from a in _context.Medical_Allergies
@@ -1326,6 +1355,18 @@ namespace LastHMS2.ApiControllers
         [HttpPost]
         public async Task<IActionResult> UpdateMedicalDetails([FromForm] IFormCollection fc, [FromQuery] List<string> allergies, [FromQuery] List<string> family, [FromQuery] List<string> chronic)
         {
+            var doc = _context.Doctors.Find(int.Parse(fc["docId"]));
+            if (!doc.Active)
+            {
+                return Ok
+                   (new
+                   {
+                       Status = false,
+                       active = false,
+                       Message = "لم يعد لديك حساب في هذه المشفى",
+                   }
+                   );
+            }
             var medical = _context.Medical_Details.Find(int.Parse(fc["medicalId"]));
             medical.MD_Patient_Blood_Type = fc["blood"].ToString();
             medical.MD_Patient_Treatment_Plans_And_Daily_Supplements = fc["plan"].ToString();

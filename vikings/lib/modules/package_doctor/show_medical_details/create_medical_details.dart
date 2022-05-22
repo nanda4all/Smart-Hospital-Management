@@ -64,6 +64,8 @@ class _CreateMedicalDetailsState extends State<CreateMedicalDetails> {
         if (state is SuccessCreateMedicalDetails) {
           showToast(message: state.message, color: Colors.green);
           Navigator.of(context).pushNamed('/ShowPatientsForDoctor');
+        } else if (state is BannedDoctor) {
+          OurCubit.get(context).bannedDoctor(state.message, context);
         }
       },
       builder: (context, state) {

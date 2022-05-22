@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/cubit/states.dart';
+
 class MedicalDetails extends StatefulWidget {
   const MedicalDetails({Key? key}) : super(key: key);
 
@@ -23,14 +24,18 @@ class _MedicalDetailsState extends State<MedicalDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
-      listener: (context, state) => {},
+      listener: (context, state) {
+        if (state is BannedDoctor) {
+          OurCubit.get(context).bannedDoctor(state.message, context);
+        }
+      },
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           title: const Text('التفاصيل الطبية'),
           backgroundColor: const Color(0xff92cbdf),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back,color:Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -38,8 +43,9 @@ class _MedicalDetailsState extends State<MedicalDetails> {
         ),
         body: ConditionalBuilder(
           condition: state is! LoadingGetMedicalDetails &&
-           OurCubit.get(context).medicalDetails != null && state is! ErrorGetMedicalDetails,
-          builder:(context) =>  Container(
+              OurCubit.get(context).medicalDetails != null &&
+              state is! ErrorGetMedicalDetails,
+          builder: (context) => Container(
             color: Color(0xff92cbdf),
             child: Padding(
               padding: const EdgeInsets.all(25.0),
@@ -199,7 +205,8 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                             OurCubit.get(context)
                                 .allergiesForPatient[index]
                                 .toString()),
-                        itemCount: OurCubit.get(context).allergiesForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).allergiesForPatient.length,
                       ),
                     ),
                     Row(
@@ -235,7 +242,8 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                             OurCubit.get(context)
                                 .familyForPatient[index]
                                 .toString()),
-                        itemCount: OurCubit.get(context).familyForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).familyForPatient.length,
                       ),
                     ),
                     Row(
@@ -269,44 +277,46 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) => buildItem(
                             OurCubit.get(context).chronicForPatient[index]),
-                        itemCount: OurCubit.get(context).chronicForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).chronicForPatient.length,
                       ),
                     ),
                     Row(
-                    children: [
-                      const Text(
-                        'المعاينات',
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                      children: [
+                        const Text(
+                          'المعاينات',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isExaminationRecordsShown =
-                                !isExaminationRecordsShown; 
-                          });
-                        },
-                        icon: Icon(
-                          isExaminationRecordsShown
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isExaminationRecordsShown =
+                                  !isExaminationRecordsShown;
+                            });
+                          },
+                          icon: Icon(
+                            isExaminationRecordsShown
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: isExaminationRecordsShown,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => buildExaminationItem(index),
-                      itemCount: OurCubit.get(context).examinations.length,
+                      ],
                     ),
-                  ),
-                  const SizedBox(
+                    Visibility(
+                      visible: isExaminationRecordsShown,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) =>
+                            buildExaminationItem(index),
+                        itemCount: OurCubit.get(context).examinations.length,
+                      ),
+                    ),
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
@@ -330,8 +340,7 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                         ),
                         onPressed: () {
                           OurCubit.get(context).medicalDetailsId =
-                              OurCubit.get(context)
-                                  .medicalDetails['medicalId'];
+                              OurCubit.get(context).medicalDetails['medicalId'];
                           Navigator.of(context).pushNamed('/ShowTests');
                         },
                         color: Colors.white,
@@ -350,8 +359,7 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                         ),
                         onPressed: () {
                           OurCubit.get(context).medicalDetailsId =
-                              OurCubit.get(context)
-                                  .medicalDetails['medicalId'];
+                              OurCubit.get(context).medicalDetails['medicalId'];
                           Navigator.of(context).pushNamed('/ShowRays');
                         },
                         color: Colors.white,
@@ -370,9 +378,9 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                         ),
                         onPressed: () {
                           OurCubit.get(context).medicalDetailsId =
-                              OurCubit.get(context)
-                                  .medicalDetails['medicalId'];
-                          Navigator.of(context).pushNamed('/ShowExternalRecordsForDoctor');
+                              OurCubit.get(context).medicalDetails['medicalId'];
+                          Navigator.of(context)
+                              .pushNamed('/ShowExternalRecordsForDoctor');
                         },
                         color: Colors.white,
                       ),
@@ -393,7 +401,10 @@ class _MedicalDetailsState extends State<MedicalDetails> {
                               docId!,
                               OurCubit.get(context)
                                   .medicalDetails['medicalId']);
-                          Navigator.of(context).pushNamed('/UpdateMedicalDetails');
+                          print(OurCubit.get(context)
+                              .medicalDetails['medicalId']);
+                          Navigator.of(context)
+                              .pushNamed('/UpdateMedicalDitails');
                         },
                         color: Colors.teal[800],
                       ),
@@ -404,60 +415,61 @@ class _MedicalDetailsState extends State<MedicalDetails> {
             ),
           ),
           fallback: (context) {
-            if (state is ErrorGetMedicalDetails) {          
+            if (state is ErrorGetMedicalDetails) {
               OurCubit.get(context).patientIdForMedicalDetails = state.paId;
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.menu,
-                          size: 100,
-                          color: Colors.grey,
-                        ),
-                        Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black38),
-                        ),
-                        const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                child: MaterialButton(
-                  onPressed: () {
-                     Navigator.of(context).pushNamed('/CreateMedicalDetails');
-                  },
-                  child: const Text(
-                    "إنشاء ملف طبي للمريض",
-                    style: TextStyle(
-                      fontSize: 23,
-                      color: Color(0xff92cbdf),
-                      fontWeight: FontWeight.w500,
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.menu,
+                      size: 100,
+                      color: Colors.grey,
                     ),
-                  ),
+                    Text(
+                      state.message,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black38),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed('/CreateMedicalDetails');
+                        },
+                        child: const Text(
+                          "إنشاء ملف طبي للمريض",
+                          style: TextStyle(
+                            fontSize: 23,
+                            color: Color(0xff92cbdf),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return Container(
+              color: const Color(0xff92cbdf),
+              child: const Center(
+                child: SpinKitWave(
+                  color: Colors.white,
+                  size: 30,
                 ),
               ),
-                      ],
-                    ),
-                  );
-                }
-                return Container(
-                  color: const Color(0xff92cbdf),
-                  child: const Center(
-                    child: SpinKitWave(
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                );
-          } ,
+            );
+          },
         ),
       ),
     );
@@ -470,7 +482,7 @@ class _MedicalDetailsState extends State<MedicalDetails> {
         ),
       );
 
-      Widget buildExaminationItem(int index) {
+  Widget buildExaminationItem(int index) {
     return MaterialButton(
       onPressed: () {
         showDialog(
@@ -479,10 +491,10 @@ class _MedicalDetailsState extends State<MedicalDetails> {
             // return object of type Dialog
             return AlertDialog(
               content: SingleChildScrollView(
-              child: Text(
+                child: Text(
                   OurCubit.get(context).examinations[index]['examination'],
                 ),
-                            ),
+              ),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 TextButton(
@@ -498,16 +510,21 @@ class _MedicalDetailsState extends State<MedicalDetails> {
       },
       child: Row(
         children: [
-           Text(
-            OurCubit.get(context).examinations[index]['doctorName'],
-            style:const TextStyle(
-              fontSize: 20,
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
+          Expanded(
+            flex: 2,
+            child: Text(
+              OurCubit.get(context).examinations[index]['doctorName'],
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Spacer(),
-           Text(
+          Text(
             OurCubit.get(context).examinations[index]['date'],
             style: TextStyle(
               fontSize: 20,

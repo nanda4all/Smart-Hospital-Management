@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/cubit/cubit.dart';
@@ -23,13 +22,12 @@ class PatientScreenMaster extends StatelessWidget {
       if (state is SuccessRequestNurse) {
         showToast(message: state.message, color: Colors.green);
         Navigator.of(context).pop();
-      }
-      if (state is ErrorRequestNurse) {
+      } else if (state is ErrorRequestNurse) {
         showToast(message: state.message, color: Colors.red);
-                Navigator.of(context).pop();
-
-      }
-      if (state is LoadingRequestNurse) {
+        Navigator.of(context).pop();
+      } else if (state is BannedPatient) {
+        OurCubit.get(context).bannedPatient(state.message, context);
+      } else if (state is LoadingRequestNurse) {
         showDialog(
           builder: (con) => AlertDialog(
             content: Row(
@@ -144,8 +142,7 @@ class PatientScreenMaster extends StatelessWidget {
                             child: const Text("نعم"),
                             onPressed: () {
                               cubit.sendNurseRequest();
-                                      Navigator.of(context).pop();
-
+                              Navigator.of(context).pop();
                             },
                           ),
                           TextButton(

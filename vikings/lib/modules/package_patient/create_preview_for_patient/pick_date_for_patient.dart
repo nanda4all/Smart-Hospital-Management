@@ -207,12 +207,12 @@ class PickDateForPatient extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 15),
                                 ConditionalBuilder(
-                                  condition: true,
+                                  condition: state is! LoadingCreatePreview,
                                   builder: (constext) => MaterialButton(
-                                    onPressed: () async {
+                                    onPressed: () {
                                       if (state is! InvalidDatePreviewDoctor) {
-                                        await OurCubit.get(context)
-                                            .createPreview(
+                                         OurCubit.get(context)
+                                            .createPreviewsForPatient(
                                                 doctorId: OurCubit.get(context).docIdForCreatePreview,
                                                 paId: paId!,
                                                date: fullDate);
@@ -257,13 +257,9 @@ class PickDateForPatient extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  fallback: (context) => Container(
-                                    color: const Color(0xff92cbdf),
-                                    child: const Center(
-                                      child: SpinKitWave(
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
+                                  fallback: (context) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),

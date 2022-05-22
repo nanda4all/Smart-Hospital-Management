@@ -9,7 +9,6 @@ import 'package:HMS/modules/package_patient/show_medical_details/medical_details
 import 'package:HMS/modules/package_patient/show_medical_details/show_external_records_for_patient.dart';
 import 'package:HMS/modules/package_patient/show_medical_details/show_rays_for_patient.dart';
 import 'package:HMS/modules/package_patient/show_medical_details/show_tests_for_patient.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:HMS/modules/Home_Screen/HomeScreen.dart';
@@ -29,7 +28,6 @@ import 'package:HMS/modules/package_patient/patient_master/paitent.dart';
 import 'package:HMS/shared/components/constants.dart';
 import 'package:HMS/shared/cubit/cubit.dart';
 import 'package:HMS/shared/cubit/login_cubit.dart';
-
 import '../../modules/package_doctor/create_surgery_for_doctor/empty_sergery_rom.dart';
 import '../../modules/package_doctor/create_surgery_for_doctor/show_patient_for_surgery.dart';
 import '../../modules/package_doctor/edit_personal_info_doctor/edit_personal_info_doctor.dart';
@@ -54,6 +52,7 @@ class AppRouter {
                     child: const HomeScreen(),
                   ));
         } else if (docId != null) {
+<<<<<<< HEAD
           return MaterialPageRoute(builder: (_) {
             AwesomeNotifications().createdStream.listen((notification) {
               print('Notification Created on ${notification.channelKey}');
@@ -67,6 +66,19 @@ class AppRouter {
                     ),
             );
           });
+=======
+          return MaterialPageRoute(
+              builder: (_) {
+                return BlocProvider.value(
+                    value: ourCubit,
+                    child: isManager!
+                        ? MgrdoctorMaster(doctorId: docId!)
+                        : DoctorMaster(
+                            doctorId: docId!,
+                          ),
+                  );
+              });
+>>>>>>> 58754ea967f54b2d00f8684e47a60cdea60b96cb
         }
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
@@ -105,12 +117,17 @@ class AppRouter {
       case '/showPreviewsForDoc':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
+<<<<<<< HEAD
                 value: ourCubit..getPreviews(docId!),
                 child: const ShowPreviewsForDoctor()));
+=======
+                value: ourCubit..displayPreviewsForDoctor(docId!),
+                child: ShowPreviewsForDoctor()));
+>>>>>>> 58754ea967f54b2d00f8684e47a60cdea60b96cb
       case '/ShowPatientsForDoctor':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                  value: ourCubit..getPatientForDoctor(docId!),
+                  value: ourCubit..displayPatientForDoctor(docId!),
                   child: const ShowPatientsForDoctor(),
                 ));
       case '/ShowDoctors':
@@ -276,17 +293,21 @@ class AppRouter {
           );
         });
 
+<<<<<<< HEAD
       case '/UpdateMidicalDitails':
+=======
+     case '/UpdateMedicalDitails':
+>>>>>>> 58754ea967f54b2d00f8684e47a60cdea60b96cb
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
-                  child: UpdateMedicalDetails(),
+                  child: UpdateMedicalDitails(),
                 ));
 
       case '/ShowPreviewForPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                  value: ourCubit..getPreviewsForPatient(paId!, hoId!),
+                  value: ourCubit..displayPreviewsForPatient(paId!, hoId!),
                   child: const ShowPreviewsForPatient(),
                 ));
 
@@ -303,6 +324,7 @@ class AppRouter {
                   value: ourCubit,
                   child: PickDateForPatient(),
                 ));
+<<<<<<< HEAD
       case '/UpdateMedicalDetails':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
@@ -318,6 +340,9 @@ class AppRouter {
                   child: Requests(),
                 );
             });
+=======
+
+>>>>>>> 58754ea967f54b2d00f8684e47a60cdea60b96cb
     }
     return null;
   }

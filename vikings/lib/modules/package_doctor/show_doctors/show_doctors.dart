@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:HMS/shared/cubit/cubit.dart';
 import 'package:HMS/shared/cubit/states.dart';
 import 'package:conditional_builder/conditional_builder.dart';
@@ -14,7 +13,11 @@ class ShowDoctors extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is BannedDoctor) {
+        OurCubit.get(context).bannedDoctor(state.message, context);
+      }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(

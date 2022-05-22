@@ -1,21 +1,19 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/cubit/states.dart';
 
-class UpdateMedicalDetails extends StatefulWidget {
+class UpdateMedicalDitails extends StatefulWidget {
   @override
-  State<UpdateMedicalDetails> createState() => _UpdateMedicalDetailsState();
+  State<UpdateMedicalDitails> createState() => _UpdateMedicalDitailsState();
 }
 
-class _UpdateMedicalDetailsState extends State<UpdateMedicalDetails> {
+class _UpdateMedicalDitailsState extends State<UpdateMedicalDitails> {
   String? bloodTypeDropdownValue;
   Map<int, GlobalKey<FormFieldState>?> allergiesKeys = {};
 
@@ -68,14 +66,13 @@ class _UpdateMedicalDetailsState extends State<UpdateMedicalDetails> {
           OurCubit.get(context).getMedicalDetailsForDoctor(
               docId!, OurCubit.get(context).medicalDetails['paId']);
           Navigator.of(context).pushNamed('/MedicalDetails');
-        }
-        if (state is SuccessGetMedicalDetailsForUpdate) {
+        } else if (state is BannedDoctor) {
+          OurCubit.get(context).bannedDoctor(state.message, context);
+        } else if (state is SuccessGetMedicalDetailsForUpdate) {
           bloodTypeDropdownValue =
               OurCubit.get(context).medicalDetails['blood'];
-          plansControllers.text =
-              OurCubit.get(context).medicalDetails['plans'];
-          needControllers.text =
-              OurCubit.get(context).medicalDetails['need'];
+          plansControllers.text = OurCubit.get(context).medicalDetails['plans'];
+          needControllers.text = OurCubit.get(context).medicalDetails['need'];
           if (OurCubit.get(context).allergiesForPatient.isNotEmpty) {
             await OurCubit.get(context).displayAllAllergies();
             widgetlistForAllergies = {};
@@ -950,4 +947,3 @@ class _UpdateMedicalDetailsState extends State<UpdateMedicalDetails> {
     return validList;
   }
 }
-
