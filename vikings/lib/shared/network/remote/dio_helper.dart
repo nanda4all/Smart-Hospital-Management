@@ -8,7 +8,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-          baseUrl:'https://192.168.1.5:44314/',
+          baseUrl: 'https://192.168.1.5:44314/',
           receiveDataWhenStatusError: true,
           headers: {
             'Content-Type': 'application/json',
@@ -22,7 +22,9 @@ class DioHelper {
   }
 
   static Future<Response> postData(
-      {required String url, required Map<String, dynamic> data , Map<String, dynamic>? query}) async {
+      {required String url,
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query}) async {
     var formData = FormData.fromMap(data);
     return await dio!
         .post(
@@ -30,7 +32,7 @@ class DioHelper {
       data: formData,
       queryParameters: query,
     )
-        .catchError((error) {  
+        .catchError((error) {
       print(error);
     });
   }
