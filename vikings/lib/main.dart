@@ -69,8 +69,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue,
         fontFamily: "Hacen-Algeria",
       ),
-      // onGenerateRoute: _appRouter.onGenerateRoute,
-      home: Request(),
+      onGenerateRoute: _appRouter.onGenerateRoute,
     );
   }
 }

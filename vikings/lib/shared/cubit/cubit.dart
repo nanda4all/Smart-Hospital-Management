@@ -81,7 +81,8 @@ class OurCubit extends Cubit<OurStates> {
   Map<dynamic, dynamic> departments = {};
   var doctorsForCreatePreview;
   late int docIdForCreatePreview;
-
+  // List<Map<dynamic, dynamic>> requests;
+  var requests;
 
   void selectedTestTypes(String? value, int index) {
     selectedTestType[index] = value;
@@ -161,11 +162,9 @@ class OurCubit extends Cubit<OurStates> {
         emit(SuccesPreviewsForDoc());
       } else {
         if (value.data['active']) {
-        emit(EmptyPreviewsForDoc(message: value.data['message'].toString()));
-          
+          emit(EmptyPreviewsForDoc(message: value.data['message'].toString()));
         } else {
-                  emit(BannedPreviewsForDoc(message: value.data['message'].toString()));
-
+          emit(BannedPreviewsForDoc(message: value.data['message'].toString()));
         }
       }
     });
@@ -180,7 +179,7 @@ class OurCubit extends Cubit<OurStates> {
         emit(SuccesPatientForDoc());
       } else {
         if (value.data['active']) {
-        emit(EmptyPatientForDoc(message: value.data['message'].toString()));
+          emit(EmptyPatientForDoc(message: value.data['message'].toString()));
         } else {
           emit(BannedPatientForDoc(message: value.data['message'].toString()));
         }
@@ -199,10 +198,10 @@ class OurCubit extends Cubit<OurStates> {
         emit(SuccesSurgeriesForDoc());
       } else {
         if (value.data['active']) {
-        emit(EmptySurgeriesForDoc(message: value.data['message'].toString()));
-          
+          emit(EmptySurgeriesForDoc(message: value.data['message'].toString()));
         } else {
-          emit(BannedSurgeriesForDoc(message: value.data['message'].toString()));
+          emit(
+              BannedSurgeriesForDoc(message: value.data['message'].toString()));
         }
       }
     });
@@ -231,11 +230,9 @@ class OurCubit extends Cubit<OurStates> {
         emit(SuccesWorkDaysForDoc());
       } else {
         if (value.data['active']) {
-        emit(EmptyWorkDaysForDoc(message: value.data['message'].toString()));
-          
+          emit(EmptyWorkDaysForDoc(message: value.data['message'].toString()));
         } else {
-                  emit(BannedWorkDaysForDoc(message: value.data['message'].toString()));
-
+          emit(BannedWorkDaysForDoc(message: value.data['message'].toString()));
         }
       }
     });
@@ -255,7 +252,8 @@ class OurCubit extends Cubit<OurStates> {
         }
         print(value.data['data']);
         for (var i = 0; i < value.data['key'].length; i++) {
-          avalibaleTimeForPreview[value.data['key'][i]]=value.data['value'][i];
+          avalibaleTimeForPreview[value.data['key'][i]] =
+              value.data['value'][i];
         }
         emit(SuccesValidateDateForCreatePreviewDoctor());
       } else {
@@ -424,9 +422,8 @@ class OurCubit extends Cubit<OurStates> {
         print(familyForPatient);
       } else {
         emit(ErrorGetMedicalDetails(
-          message: value.data['message'].toString(),
-          paId: value.data['paId']
-          ));
+            message: value.data['message'].toString(),
+            paId: value.data['paId']));
       }
     });
   }
@@ -447,7 +444,8 @@ class OurCubit extends Cubit<OurStates> {
         print(familyForPatient);
       } else {
         print(value.data);
-        emit(ErrorGetMedicalDetailsForPatient(message: value.data['message'].toString()));
+        emit(ErrorGetMedicalDetailsForPatient(
+            message: value.data['message'].toString()));
       }
     });
   }
@@ -516,8 +514,7 @@ class OurCubit extends Cubit<OurStates> {
         urlMethod: getAreas,
         query: {'id': int.parse(selectedCity!)}).then((value) {
       for (var i = 0; i < value.data.length; i++) {
-        areas[value.data[i]['id'] as int] =
-            value.data[i]['name'] as String;
+        areas[value.data[i]['id'] as int] = value.data[i]['name'] as String;
       }
       emit(SuccessLoadingAreas());
     });
@@ -749,9 +746,9 @@ class OurCubit extends Cubit<OurStates> {
       if (value.data['status']) {
         emit(SuccessCreateSurgeryDoctor(
             message: value.data['message'].toString()));
-      }
-      else if (value.data['active']) {
-        emit(BannedCreateSurgeryDoctor(message: value.data['message'].toString()));
+      } else if (value.data['active']) {
+        emit(BannedCreateSurgeryDoctor(
+            message: value.data['message'].toString()));
       }
     }).catchError((error) {
       print(error.toString());
@@ -775,7 +772,7 @@ class OurCubit extends Cubit<OurStates> {
     });
   }
 
-Future<void> displayAreasByCityId(cityId) async {
+  Future<void> displayAreasByCityId(cityId) async {
     emit(LoadingDisplayAreasByCityId());
     await DioHelper.getData(urlMethod: areasByCityId, query: {'id': cityId})
         .then((value) {
@@ -786,7 +783,7 @@ Future<void> displayAreasByCityId(cityId) async {
     });
   }
 
-Future<void> editPersonalInfoDoctor(
+  Future<void> editPersonalInfoDoctor(
       {required int docId,
       required String socialDropdownValue,
       required String familyMembers,
@@ -809,7 +806,7 @@ Future<void> editPersonalInfoDoctor(
     });
   }
 
- Future<void> getPersonalInfoPatient(int paId) async {
+  Future<void> getPersonalInfoPatient(int paId) async {
     emit(LoadingGetPersonalInfo());
     await DioHelper.getData(urlMethod: personalInfoPatient, query: {'id': paId})
         .then((value) {
@@ -827,7 +824,7 @@ Future<void> editPersonalInfoDoctor(
     });
   }
 
-Future<void> editPersonalInfoPatient(
+  Future<void> editPersonalInfoPatient(
       {required int paId,
       required String socialDropdownValue,
       required List<String> phones,
@@ -845,12 +842,13 @@ Future<void> editPersonalInfoPatient(
       print(error.toString());
     });
   }
-  Future<void> sendNurseRequest()async{
+
+  Future<void> sendNurseRequest() async {
     emit(LoadingRequestNurse());
-    await DioHelper.getData(urlMethod: sendingNurseRequest,query: {'id':paId})
-    .then((value) {
+    await DioHelper.getData(urlMethod: sendingNurseRequest, query: {'id': paId})
+        .then((value) {
       emit(SuccessRequestNurse(message: value.data['message'].toString()));
-    }).catchError((error){
+    }).catchError((error) {
       emit(ErrorRequestNurse(message: 'فشل الاتصال'));
       print(error.toString());
     });
@@ -882,7 +880,7 @@ Future<void> editPersonalInfoPatient(
     });
   }
 
-Future<void> displayAllAllergies() async {
+  Future<void> displayAllAllergies() async {
     emit(LoadingShowAllAllergies());
     await DioHelper.getData(
       urlMethod: showAllAllergies,
@@ -892,9 +890,9 @@ Future<void> displayAllAllergies() async {
       }
       emit(SuccessShowAllAllergies());
     });
-  }  
+  }
 
-Future<void> displayDiseasesTypes() async {
+  Future<void> displayDiseasesTypes() async {
     emit(LoadingDisplayDiseasesTypes());
     await DioHelper.getData(
       urlMethod: showDiseasesTypes,
@@ -1037,6 +1035,7 @@ Future<void> displayDiseasesTypes() async {
       }
     });
   }
+
   Future<void> getMedicalDetailsForUpdate(int id, int medicalId) async {
     emit(LoadingGetMedicalDetails());
     await DioHelper.getData(
@@ -1060,4 +1059,23 @@ Future<void> displayDiseasesTypes() async {
     });
   }
 
+  Future<void> getRequestsForDeptMgr() async {
+    emit(LoadingGetRequestsForDeptMgr());
+    await DioHelper.getData(
+        urlMethod: displayRequestsForDeptMgr,
+        query: {'id': docId}).then((value) {
+      if (value.data['status']) {
+        emit(SuccessGetRequestsForDeptMgr());
+        requests = value.data['data'];
+        print(value.data);
+      } else if (!value.data['status'] && value.data['active']) {
+        emit(EmptyGetRequestsForDeptMgr(
+            message: value.data['message'].toString()));
+      } else {
+        emit(BannedGetRequestsForDeptMgr(
+            message: value.data['message'].toString()));
+      }
+    });
+  }
+  
 }

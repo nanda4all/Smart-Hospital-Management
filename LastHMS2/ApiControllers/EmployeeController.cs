@@ -1389,15 +1389,41 @@ namespace LastHMS2.ApiControllers
             return Ok(new { message = "تم تعديل الملف الطبي بنجاح" });
 
         }
-        //public async Task<IActionResult> ShowRequestsForDeptManager([FromQuery]  int id)
-        //{
-        //    var Deptmanager = _context.Doctors.Find(id);
-        //    var dept = _context.Departments.Where(d => d.Department_Id == Deptmanager.Department_Id).Include(d => d.Dept_Manager).ToArray()[0];
-        //    if (!Deptmanager.Active && Deptmanager.Doctor_Id == dept.Dept_Manager.Doctor_Id)
-        //        return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
-        //    ViewBag.HoId = HoId;
-        //    ViewBag.DeptMgrId = id;
-        //    return View(await _context.Requests.Where(r => r.Employee_Id == id && r.Accept == false).ToListAsync());
-        //}
+        [Route("[action]")]
+        public async Task<IActionResult> ShowRequestsForDeptManager([FromQuery] int id)
+        {
+            var Deptmanager = _context.Doctors.Find(id);
+            var dept = _context.Departments.Where(d => d.Department_Id == Deptmanager.Department_Id).Include(d => d.Dept_Manager).ToArray()[0];
+            if (!Deptmanager.Active && Deptmanager.Doctor_Id == dept.Dept_Manager.Doctor_Id)
+                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+
+            var requests = await _context.Requests.Where(r => r.Doctor_Id == id && r.Accept == false)
+                    .Select(r => new
+                    {
+                        description = r.Request_Description,
+                        date = r.Request_Date,
+                        type = r.Request_Type,
+                        id = r.Request_Id
+                    }).ToListAsync();
+            if (requests.Count==0)
+            {
+                return Ok(
+                new
+                {
+                    status = false,
+                    Active = true,
+                    Message = "لا يوجد لديك طلبات",
+                });
+            }
+
+            return Ok(
+                new
+                {
+                    status = true,
+                    Active = true,
+                    data = requests
+                });
+                    
+        }
     }
 }

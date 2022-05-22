@@ -426,3 +426,21 @@ class SuccessDisplayDoctorForCreatePreview extends OurStates {}
 
 
 
+
+class LoadingGetRequestsForDeptMgr extends OurStates {}
+
+class SuccessGetRequestsForDeptMgr extends OurStates {}
+
+class EmptyGetRequestsForDeptMgr extends OurStates {
+  String message;
+  EmptyGetRequestsForDeptMgr({
+    required this.message,
+  });
+}
+class BannedGetRequestsForDeptMgr extends OurStates {
+  String message;
+  BannedGetRequestsForDeptMgr({
+    required this.message,
+  });
+}
+

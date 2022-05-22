@@ -1,3 +1,4 @@
+import 'package:HMS/modules/package_doctor/request/request.dart';
 import 'package:HMS/modules/package_doctor/show_doctors/add_doctor.dart';
 import 'package:HMS/modules/package_doctor/show_doctors/show_doctors.dart';
 import 'package:HMS/modules/package_doctor/show_medical_details/show_external_records.dart';
@@ -51,23 +52,21 @@ class AppRouter {
               builder: (_) => BlocProvider.value(
                     value: logCupit,
                     child: const HomeScreen(),
-                  )
-                  );
+                  ));
         } else if (docId != null) {
-          return MaterialPageRoute(
-              builder: (_) {
-                AwesomeNotifications().createdStream.listen((notification) {
- print('Notification Created on ${notification.channelKey}');
-});
-                return BlocProvider.value(
-                    value: ourCubit,
-                    child: isManager!
-                        ? MgrdoctorMaster(doctorId: docId!)
-                        : DoctorMaster(
-                            doctorId: docId!,
-                          ),
-                  );
-              });
+          return MaterialPageRoute(builder: (_) {
+            AwesomeNotifications().createdStream.listen((notification) {
+              print('Notification Created on ${notification.channelKey}');
+            });
+            return BlocProvider.value(
+              value: ourCubit,
+              child: isManager!
+                  ? MgrdoctorMaster(doctorId: docId!)
+                  : DoctorMaster(
+                      doctorId: docId!,
+                    ),
+            );
+          });
         }
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
@@ -76,8 +75,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           logCupit.selectedValue = null;
           return BlocProvider.value(
-              value: logCupit..getHospital(), 
-              child: LoginScreenDoc());
+              value: logCupit..getHospital(), child: LoginScreenDoc());
         });
       case '/LoginPa':
         return MaterialPageRoute(
@@ -107,7 +105,8 @@ class AppRouter {
       case '/showPreviewsForDoc':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                value: ourCubit..getPreviews(docId!), child: const ShowPreviewsForDoctor()));
+                value: ourCubit..getPreviews(docId!),
+                child: const ShowPreviewsForDoctor()));
       case '/ShowPatientsForDoctor':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
@@ -121,20 +120,19 @@ class AppRouter {
                   child: const ShowDoctors(),
                 ));
       case '/AddDoctor':
-        return MaterialPageRoute(
-            builder: (_) {
-              ourCubit.doctorBirthDate=null;
-              ourCubit.doctorHireDate=null;
-              ourCubit.selectedArea=null;
-              ourCubit.selectedBirthPlace=null;
-              ourCubit.selectedCity=null;
-              ourCubit.selectedGender=null;
-              ourCubit.selectedSocialStatus=null;
-              return BlocProvider.value(
-                  value: ourCubit..getAllCities(),
-                  child: AddDoctor(),
-                );
-            });
+        return MaterialPageRoute(builder: (_) {
+          ourCubit.doctorBirthDate = null;
+          ourCubit.doctorHireDate = null;
+          ourCubit.selectedArea = null;
+          ourCubit.selectedBirthPlace = null;
+          ourCubit.selectedCity = null;
+          ourCubit.selectedGender = null;
+          ourCubit.selectedSocialStatus = null;
+          return BlocProvider.value(
+            value: ourCubit..getAllCities(),
+            child: AddDoctor(),
+          );
+        });
       case '/SurgeryForDoctor':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
@@ -215,29 +213,30 @@ class AppRouter {
       case '/ShowExternalRecordsForDoctor':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                  value: ourCubit..showExternalRecords(ourCubit.medicalDetailsId),
+                  value: ourCubit
+                    ..showExternalRecords(ourCubit.medicalDetailsId),
                   child: const ShowExternalRecordsForDoctor(),
                 ));
       case '/ShowExternalRecordsForPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                  value: ourCubit..showExternalRecords(ourCubit.medicalDetailsId),
+                  value: ourCubit
+                    ..showExternalRecords(ourCubit.medicalDetailsId),
                   child: const ShowExternalRecordsForPatient(),
                 ));
       case '/ShowBillForPatient':
-        return MaterialPageRoute(
-            builder: (_) {
-              print(paId);
-              return BlocProvider.value(
-                  value: ourCubit..getBills(),
-                  child: const ShowBillForPatient(),
-                );
-            });
-            case '/ShowEmptySurgeryRoom':
+        return MaterialPageRoute(builder: (_) {
+          print(paId);
+          return BlocProvider.value(
+            value: ourCubit..getBills(),
+            child: const ShowBillForPatient(),
+          );
+        });
+      case '/ShowEmptySurgeryRoom':
         return MaterialPageRoute(builder: (_) {
           ourCubit.avalibaleTimeForSurgery = {};
           ourCubit.selectedHourForSurgery = {};
-          ourCubit.selectedMinuteForSurgery= {};
+          ourCubit.selectedMinuteForSurgery = {};
           ourCubit.selectedTimeForSurgery = {};
           return BlocProvider.value(
             value: ourCubit..displayEmptySurgeryRoom(hoId!),
@@ -245,27 +244,26 @@ class AppRouter {
           );
         });
       case '/ShowPatientsForCreateSurgery':
-        return MaterialPageRoute(
-            builder: (_) {
-              return BlocProvider.value(
-                  value: ourCubit..displayPatientForSurgery(hoId!),
-                  child: ShowPatientsForCreateSurgery(),
-                );
-            });
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider.value(
+            value: ourCubit..displayPatientForSurgery(hoId!),
+            child: ShowPatientsForCreateSurgery(),
+          );
+        });
       case '/EditPersonalInformationDoctor':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
                   child: const EditPersonalInfoDoctor(),
                 ));
-     case '/EditPersonalInformationPatient':
+      case '/EditPersonalInformationPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
                   child: const EditPersonalInfoPetient(),
                 ));
 
-     case '/CreateMedicalDetails':
+      case '/CreateMedicalDetails':
         return MaterialPageRoute(builder: (_) {
           ourCubit.allergiesSelcted = {};
           ourCubit.diseasesTypesSelctedForFamily = {};
@@ -278,40 +276,48 @@ class AppRouter {
           );
         });
 
-     case '/UpdateMidicalDitails':
+      case '/UpdateMidicalDitails':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
                   child: UpdateMedicalDetails(),
                 ));
 
-     case '/ShowPreviewForPatient':
+      case '/ShowPreviewForPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit..getPreviewsForPatient(paId!, hoId!),
                   child: const ShowPreviewsForPatient(),
                 ));
 
-     case '/CreatePreviewForPatient':
+      case '/CreatePreviewForPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit..displayDepartmentForCreatePreview(hoId!),
                   child: CreatePreviewForPatient(),
                 ));
 
-     case '/PickDateForPatient':
+      case '/PickDateForPatient':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
                   child: PickDateForPatient(),
                 ));
-     case '/UpdateMedicalDetails':
+      case '/UpdateMedicalDetails':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: ourCubit,
                   child: UpdateMedicalDetails(),
                 ));
-
+      case '/Requests':
+        return MaterialPageRoute(
+            builder: (_) {
+              ourCubit.requests=[];
+              return BlocProvider.value(
+                  value: ourCubit..getRequestsForDeptMgr(),
+                  child: Requests(),
+                );
+            });
     }
     return null;
   }

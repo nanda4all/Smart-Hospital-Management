@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 const loginForDoctor ='api/Employee/LogIn';
 const doctorPreviews ='api/Employee/DisplayPreviews';
 const patientsForDoctor ='api/Employee/DisplayPatients';
@@ -49,3 +51,5 @@ const validateDateForPatientPreview = 'api/Patient/ValidateDateForPatient';
 const validateTimeForPatientPreview = 'api/Patient/CheckTimeForPatient';
 const showDoctorForCreatePreview = 'api/Patient/DisplayDoctorsForCreatePreview';
 const showMedicalDetailsForUpdate = 'api/Employee/GetMedicalDetailsForUpdate';
+
+const displayRequestsForDeptMgr = 'api/Employee/ShowRequestsForDeptManager';

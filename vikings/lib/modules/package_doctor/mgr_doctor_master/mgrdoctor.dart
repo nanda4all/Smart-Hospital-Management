@@ -18,7 +18,8 @@ class MgrdoctorMaster extends StatelessWidget {
     'حجز موعد',
     'المواعيد',
     'المرضى',
-    'الأطباء'
+    'الأطباء',
+    'التقارير',
   ];
   List<ImageProvider<Object>> images = const [
     AssetImage('lib/assets/images/prev.png'),
@@ -26,6 +27,7 @@ class MgrdoctorMaster extends StatelessWidget {
     AssetImage('lib/assets/images/takeprev.png'),
     AssetImage('lib/assets/images/prev.png'),
     AssetImage('lib/assets/images/pat.png'),
+    AssetImage('lib/assets/images/doctor.jpg'),
     AssetImage('lib/assets/images/doctor.jpg'),
   ];
   @override
@@ -118,6 +120,8 @@ class MgrdoctorMaster extends StatelessWidget {
               Navigator.of(context).pushNamed('/ShowPatientsForDoctor');
             } else if (index == 5) {
               Navigator.of(context).pushNamed('/ShowDoctors');
+            } else if (index == 6) {
+              Navigator.of(context).pushNamed('/Requests');
             }
           },
           child: CircleAvatar(
