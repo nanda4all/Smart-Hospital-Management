@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-
 import 'dart:io';
 import 'package:HMS/shared/components/firebase_fcm.dart';
 import 'package:HMS/shared/notificationservice.dart';
@@ -9,7 +8,6 @@ import 'package:HMS/presentation/router/app_router.dart';
 import 'package:HMS/shared/components/constants.dart';
 import 'package:HMS/shared/network/local/cache_helper.dart';
 import 'package:HMS/shared/network/remote/dio_helper.dart';
-
 import 'modules/package_doctor/request/request.dart';
 import 'shared/local_notifications_service.dart';
 
@@ -69,8 +67,8 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue,
         fontFamily: "Hacen-Algeria",
       ),
-      // onGenerateRoute: _appRouter.onGenerateRoute,
-      home: Request(),
+       onGenerateRoute: _appRouter.onGenerateRoute,
+     
     );
   }
 }

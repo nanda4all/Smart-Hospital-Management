@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/cubit/states.dart';
+
 class MedicalDetailsForPatient extends StatefulWidget {
   const MedicalDetailsForPatient({Key? key}) : super(key: key);
 
   @override
-  State<MedicalDetailsForPatient> createState() => _MedicalDetailsForPatientState();
+  State<MedicalDetailsForPatient> createState() =>
+      _MedicalDetailsForPatientState();
 }
 
 class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
@@ -23,7 +25,7 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
       listener: (context, state) {
-         if (state is BannedPatient) {
+        if (state is BannedPatient) {
           OurCubit.get(context).bannedPatient(state.message, context);
         }
       },
@@ -33,7 +35,10 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
           backgroundColor: const Color(0xff92cbdf),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back,color: Colors.white,),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/', (Route<dynamic> route) => false);
@@ -42,10 +47,11 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
         ),
         body: ConditionalBuilder(
           condition: state is! LoadingGetMedicalDetails &&
-           OurCubit.get(context).medicalDetails != null
-           && state is! ErrorGetMedicalDetailsForPatient,
-          builder:(context) =>  Container(
-            color:const Color(0xff92cbdf),
+              OurCubit.get(context).medicalDetails != null &&
+              state is! ErrorGetMedicalDetailsForPatient,
+          builder: (context) => Container(
+            color: const Color(0xff92cbdf),
+            height: MediaQuery.of(context).size.height * 0.9,
             child: Padding(
               padding: const EdgeInsets.all(25.0),
               child: SingleChildScrollView(
@@ -204,7 +210,8 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
                             OurCubit.get(context)
                                 .allergiesForPatient[index]
                                 .toString()),
-                        itemCount: OurCubit.get(context).allergiesForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).allergiesForPatient.length,
                       ),
                     ),
                     Row(
@@ -240,7 +247,8 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
                             OurCubit.get(context)
                                 .familyForPatient[index]
                                 .toString()),
-                        itemCount: OurCubit.get(context).familyForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).familyForPatient.length,
                       ),
                     ),
                     Row(
@@ -274,44 +282,46 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) => buildItem(
                             OurCubit.get(context).chronicForPatient[index]),
-                        itemCount: OurCubit.get(context).chronicForPatient.length,
+                        itemCount:
+                            OurCubit.get(context).chronicForPatient.length,
                       ),
                     ),
                     Row(
-                    children: [
-                      const Text(
-                        'المعاينات',
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                      children: [
+                        const Text(
+                          'المعاينات',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isExaminationRecordsShown =
-                                !isExaminationRecordsShown; 
-                          });
-                        },
-                        icon: Icon(
-                          isExaminationRecordsShown
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isExaminationRecordsShown =
+                                  !isExaminationRecordsShown;
+                            });
+                          },
+                          icon: Icon(
+                            isExaminationRecordsShown
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: isExaminationRecordsShown,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => buildExaminationItem(index),
-                      itemCount: OurCubit.get(context).examinations.length,
+                      ],
                     ),
-                  ),
-                  const SizedBox(
+                    Visibility(
+                      visible: isExaminationRecordsShown,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) =>
+                            buildExaminationItem(index),
+                        itemCount: OurCubit.get(context).examinations.length,
+                      ),
+                    ),
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
@@ -335,9 +345,9 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
                         ),
                         onPressed: () {
                           OurCubit.get(context).medicalDetailsId =
-                              OurCubit.get(context)
-                                  .medicalDetails['medicalId'];
-                          Navigator.of(context).pushNamed('/ShowTestsForPatient');
+                              OurCubit.get(context).medicalDetails['medicalId'];
+                          Navigator.of(context)
+                              .pushNamed('/ShowTestsForPatient');
                         },
                         color: Colors.white,
                       ),
@@ -371,12 +381,12 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/ShowExternalRecordsForPatient');
+                          Navigator.pushNamed(
+                              context, '/ShowExternalRecordsForPatient');
                         },
                         color: Colors.white,
                       ),
                     ),
-                    
                   ],
                 ),
               ),
@@ -384,36 +394,36 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
           ),
           fallback: (context) {
             if (state is ErrorGetMedicalDetails) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.menu,
-                          size: 100,
-                          color: Colors.grey,
-                        ),
-                        Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black38),
-                        ),
-                      ],
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.menu,
+                      size: 100,
+                      color: Colors.grey,
                     ),
-                  );
-                }
-                return Container(
-                  color: const Color(0xff92cbdf),
-                  child: const Center(
-                    child: SpinKitWave(
-                      color: Colors.white,
-                      size: 30,
+                    Text(
+                      state.message,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black38),
                     ),
-                  ),
-                );
-          } ,
+                  ],
+                ),
+              );
+            }
+            return Container(
+              color: const Color(0xff92cbdf),
+              child: const Center(
+                child: SpinKitWave(
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -426,7 +436,7 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
         ),
       );
 
-      Widget buildExaminationItem(int index) {
+  Widget buildExaminationItem(int index) {
     return MaterialButton(
       onPressed: () {
         showDialog(
@@ -435,10 +445,10 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
             // return object of type Dialog
             return AlertDialog(
               content: SingleChildScrollView(
-              child: Text(
+                child: Text(
                   OurCubit.get(context).examinations[index]['examination'],
                 ),
-                            ),
+              ),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 TextButton(
@@ -454,16 +464,16 @@ class _MedicalDetailsForPatientState extends State<MedicalDetailsForPatient> {
       },
       child: Row(
         children: [
-           Text(
+          Text(
             OurCubit.get(context).examinations[index]['doctorName'],
-            style:const TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               color: Colors.grey,
               fontWeight: FontWeight.w500,
             ),
           ),
           Spacer(),
-           Text(
+          Text(
             OurCubit.get(context).examinations[index]['date'],
             style: TextStyle(
               fontSize: 20,
