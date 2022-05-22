@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "813339707057",
+    "project_id": "flutter-asp-notifications",
+    "storage_bucket": "flutter-asp-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813339707057:android:2ed77cae602999f25e8490",
+        "android_client_info": {
+          "package_name": "com.vikings.HMS"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813339707057-gflq431ppkqlssbsqcul2ktqv5kqdhal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMKMuV1YaxzrppUOBQRLtLCG8XwSxc64w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813339707057-gflq431ppkqlssbsqcul2ktqv5kqdhal.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
