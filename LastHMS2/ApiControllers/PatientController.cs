@@ -63,7 +63,7 @@ namespace LastHMS2.ApiControllers
             var pat = _context.Patients.Find(id);
             if (!pat.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             var phone = await _context.Patient_Phone_Numbers.Where(p => p.Patient_Id == id).ToListAsync();
             var patient = await (from p in _context.Patients
@@ -130,9 +130,9 @@ namespace LastHMS2.ApiControllers
         public IActionResult DisplayPreview([FromQuery] int id, [FromQuery] int Ho_Id)  //PaId
         {
             var pat = _context.Patients.Find(id);
-            if (pat.Active)
+            if (!pat.Active)
             {
-                return Ok(new { status = false, Active = false, Message = "لقد تم حظرك من المشفى" });
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
             }
             var spec = (from d in _context.Departments
                         join spe in _context.Specializations
@@ -146,7 +146,7 @@ namespace LastHMS2.ApiControllers
             var previews = (from pre in _context.Previews.ToList()
                             join doc in _context.Doctors.ToList()
                             on pre.Doctor_Id equals doc.Doctor_Id
-                            where pre.Patient_Id == id && pre.Preview_Date >= DateTime.Now
+                            where pre.Patient_Id == id && pre.Preview_Date.Date >= DateTime.Now.Date
                             orderby pre.Preview_Date
                             select new
                             {
@@ -156,6 +156,7 @@ namespace LastHMS2.ApiControllers
                                 PreviewHour = pre.Preview_Date.ToString("hh:mm:tt"),
                                 DoctorPhoneNumber = _context.Doctor_Phone_Numbers.Where(dpn => dpn.Doctor_Id == doc.Doctor_Id).ToList(),
                                 speclization = spec.FirstOrDefault(s => s.Dept_Id == Convert.ToInt32(doc.Department_Id)).Spec_Name,
+                                isToday = pre.Preview_Date.Date == DateTime.Now.Date ? true : false,
 
                             }).ToList();
             if (previews.Count == 0)
@@ -164,6 +165,7 @@ namespace LastHMS2.ApiControllers
                     new
                     {
                         Status = false,
+                        Active = true,
                         Message = "ليس لديك معاينات"
                     }
                     );
@@ -215,6 +217,47 @@ namespace LastHMS2.ApiControllers
 
             return Ok(new { doctors = doctors });
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> CreatePreview([FromForm] IFormCollection fc, [FromQuery] DateTime date)
+        {
+            Preview p = new Preview()
+            {
+                Caring = true,
+                Doctor_Id = int.Parse(fc["id"]),
+                Patient_Id = int.Parse(fc["PatId"]),
+                Preview_Date = date /// can be changed
+            };
+            _context.Add(p);
+            await _context.SaveChangesAsync();
+            #region send notification
+            //==============================================================================================
+            var doc = await _context.Doctors.FirstOrDefaultAsync(pat => pat.Doctor_Id == p.Doctor_Id);
+            var message = new MulticastMessage()
+            {
+                Notification = new Notification()
+                {
+                    Title = "موعد جديد",
+                    Body = "لديك موعد جديد عند الطبيب " + doc.Doctor_Full_Name,
+                    //ImageUrl=
+                },
+                Data = new Dictionary<string, string>()
+                    {
+                        { "route","/showPreviewsForDoc" },
+                    }
+
+            };
+            await FCMService.SendNotificationToUserAsync((int)p.Patient_Id, UserType.pat, message);
+            //=========================================================================================
+            #endregion
+
+            return Ok(new
+            {
+                Status = true,
+                Message = "تم حجز الموعد بنجاح"
+            });
+        }
         #endregion
 
 
@@ -222,11 +265,16 @@ namespace LastHMS2.ApiControllers
         // (عرض التفاصيل الطبية)
         public async Task<IActionResult> GetMedicalDetails([FromQuery] int id)//PaId
         {
+            var pat = _context.Patients.Find(id);
+            if (!pat.Active)
+            {
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
+            }
             var medical = await _context.Medical_Details.FirstOrDefaultAsync(m => m.Patient.Patient_Id == id);
 
             if (medical == null)
             {
-                return Ok(new { status = false, Message = "لا يوجد ملف طبي" });
+                return Ok(new { status = false, Active = true, Message = "لا يوجد ملف طبي" });
             }
 
             var allergies = await (from a in _context.Medical_Allergies
@@ -286,7 +334,10 @@ namespace LastHMS2.ApiControllers
         public async Task<IActionResult> ShowBillForPatient([FromQuery] int id)
         {
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Patient_Id == id);
-            if (patient == null) return Ok(new { Status = false, Message = "The Patient was Not Found" });
+            if (!patient.Active)
+            {
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
+            }
             var bills = _context.Bills.Where(b => b.Patient_Id == patient.Patient_Id).Select(b => new
             {
                 bill_Examination = b.Bill_Examination == null ? 0 : b.Bill_Examination,
@@ -308,7 +359,7 @@ namespace LastHMS2.ApiControllers
 
             }).ToList();
             if (bills.Count == 0)
-                return Ok(new { Status = false, Message = "No Bills" });
+                return Ok(new { Status = false, Active = true, Message = "ليس لديك فواتير" });
 
             return Ok(new
             {
@@ -323,6 +374,10 @@ namespace LastHMS2.ApiControllers
         public async Task<IActionResult> RequestNurse([FromQuery] int id)
         {
             var patient = await _context.Patients.FindAsync(id);
+            if (!patient.Active)
+            {
+                return Ok(new { status = false, Active = false, Message = "لم يعد لديك حساب في هذه المشفى" });
+            }
             var HeadNurse = _context.Employees.FirstOrDefault(e => e.Ho_Id == patient.Ho_Id && e.Active && e.Employee_Job == "HeadNurse");
             Request request = new Request
             {
