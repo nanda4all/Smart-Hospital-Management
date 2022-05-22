@@ -51,4 +51,6 @@ const validateDateForPatientPreview = 'api/Patient/ValidateDateForPatient';
 const validateTimeForPatientPreview = 'api/Patient/CheckTimeForPatient';
 const showDoctorForCreatePreview = 'api/Patient/DisplayDoctorsForCreatePreview';
 const showMedicalDetailsForUpdate = 'api/Employee/GetMedicalDetailsForUpdate';
+
+const displayRequestsForDeptMgr = 'api/Employee/ShowRequestsForDeptManager';
 const addExam ='api/Employee/AddExamination';

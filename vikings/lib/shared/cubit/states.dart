@@ -426,12 +426,6 @@ class EmptyGetRequestsForDeptMgr extends OurStates {
   String message;
   EmptyGetRequestsForDeptMgr({
     required this.message,
-  });
-}
-class BannedGetRequestsForDeptMgr extends OurStates {
-  String message;
-  BannedGetRequestsForDeptMgr({
-    required this.message,
-  });
+ });
 }
 
