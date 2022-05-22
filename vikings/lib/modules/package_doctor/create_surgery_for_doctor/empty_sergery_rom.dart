@@ -63,20 +63,9 @@ class _ShowEmptySurgeryRoomState extends State<ShowEmptySurgeryRoom> {
         showToast(message: state.message, color: Colors.green);
       } else if (state is LoadingCreateSurgeryDoctor ||
           state is LoadingGetAvalibaleTimeForSurgery) {}
-          else if (state is BannedCreateSurgeryDoctor) {
-                      showToast(message: state.message, color: Colors.red);
-                      Navigator.pop(context);
-                                sharedPreferences.remove('docId');
-                                sharedPreferences.remove('isManager');
-                                sharedPreferences.remove('hoId');
-                                docId = null;
-                                hoId = null;
-                                isManager = false;
-                                isLogin = false;
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/", (Route<dynamic> route) => false);
-
-        }
+          else if (state is BannedDoctor) {
+        OurCubit.get(context).bannedDoctor(state.message, context);
+      }
     }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(

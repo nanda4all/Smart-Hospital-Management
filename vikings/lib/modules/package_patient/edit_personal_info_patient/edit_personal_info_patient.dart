@@ -37,6 +37,8 @@ class _EditPersonalInfoPetientState extends State<EditPersonalInfoPetient> {
           showToast(message: state.message, color: Colors.green);
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+        } else if (state is BannedPatient) {
+          OurCubit.get(context).bannedPatient(state.message, context);
         } else if (state is SuccesGetPersonalInfo) {
           socialDropdownValue = OurCubit.get(context).paInfo[0]['social'];
           dropdownValueCity =

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
-
 import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/cubit/cubit.dart';
@@ -215,12 +214,11 @@ class PickDate extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             ConditionalBuilder(
-                              condition: state is! LoadingCreatePreviewDoctor,
-                              
+                              condition: state is! LoadingCreatePreview,         
                               builder: (constext) => MaterialButton(
-                                onPressed: () async {
+                                onPressed: ()  {
                                   if (state is! InvalidDatePreviewDoctor) {
-                                    await OurCubit.get(context).createPreview(
+                                     OurCubit.get(context).createPreviewsForDoctor(
                                         doctorId: docId!,
                                         paId: OurCubit.get(context)
                                             .paIdForCreatePreview,
@@ -265,15 +263,11 @@ class PickDate extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              fallback: (context) => Container(
-                                color: const Color(0xff92cbdf),
-                                child: const Center(
-                                  child: SpinKitWave(
-                                    color: Colors.white,
-                                    size: 30,
+                              fallback: (context) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ),
                             ),
                           ],
                         )),

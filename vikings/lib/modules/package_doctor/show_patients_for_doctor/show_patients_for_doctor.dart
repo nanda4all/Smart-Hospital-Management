@@ -15,20 +15,9 @@ class ShowPatientsForDoctor extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
         listener: (context, state) {
-          if (state is BannedPatientForDoc) {
-                      showToast(message: state.message, color: Colors.red);
-                      Navigator.pop(context);
-                                sharedPreferences.remove('docId');
-                                sharedPreferences.remove('isManager');
-                                sharedPreferences.remove('hoId');
-                                docId = null;
-                                hoId = null;
-                                isManager = false;
-                                isLogin = false;
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/", (Route<dynamic> route) => false);
-
-        }
+          if (state is BannedDoctor) {
+        OurCubit.get(context).bannedDoctor(state.message, context);
+      }
         },
         builder: (context, state) {
           return Scaffold(
@@ -45,7 +34,7 @@ class ShowPatientsForDoctor extends StatelessWidget {
             ),
             body: ConditionalBuilder(
                 condition: state is! LoadingPatientForDoc &&
-                    state is! BannedPatientForDoc,
+                    state is! EmptyPatientForDoc,
                 builder: (context) => Container(
                       color: const Color(0xff92cbdf),
                       width: double.infinity,
@@ -57,7 +46,7 @@ class ShowPatientsForDoctor extends StatelessWidget {
                       ),
                     ),
                 fallback: (context) {
-                  if (state is BannedPatientForDoc) {
+                  if (state is EmptyPatientForDoc) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

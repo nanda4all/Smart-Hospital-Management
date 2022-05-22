@@ -13,12 +13,10 @@ import 'package:intl/intl.dart';
 class AddDoctor extends StatelessWidget {
   AddDoctor({Key? key}) : super(key: key);
 
-List<GlobalKey<FormFieldState>> keys = [];
-List<TextEditingController> controllers = [];
-List<Widget> r = [];
-List<Widget> widgetlist = [];
-
-
+  List<GlobalKey<FormFieldState>> keys = [];
+  List<TextEditingController> controllers = [];
+  List<Widget> r = [];
+  List<Widget> widgetlist = [];
 
   var formKey = GlobalKey<FormState>();
 
@@ -39,33 +37,31 @@ List<Widget> widgetlist = [];
       listener: (context, state) {
         if (state is FailedValidateDoctor) {
           showToast(message: state.message, color: Colors.red);
-        }
-        if (state is SuccessCreateDoctor) {
+        } else if (state is SuccessCreateDoctor) {
           showToast(message: "تم إضافة الطبيب بنجاح", color: Colors.green);
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/ShowDoctors', (Route<dynamic> route) => false);
-        }
-        if(widgetlist.isEmpty){
-                          controllers.add(TextEditingController());
-                          keys.add(GlobalKey<FormFieldState>());
-                          print(keys.first);
-                          r.add(remove(keys.first, context));
-                          widgetlist.add(textInput(
-                              icon: Icons.phone,
-                              validate: (value) {
-                                if (value == '') {
-                                  return "الرجاء عدم ترك الحقل فارغ";
-                                }
-                                if(value.toString().length!=10)
-                                {
-                                  return 'الرجاء وضع رقم صحيح';
-                                }
-                                return null;
-                              },
-                              controller: controllers[0],
-                              key: keys.first,
-                              context: context,
-                              inputType: TextInputType.number));
+        } else if (state is BannedDoctor) {
+          OurCubit.get(context).bannedDoctor(state.message, context);
+        } else if (widgetlist.isEmpty) {
+          controllers.add(TextEditingController());
+          keys.add(GlobalKey<FormFieldState>());
+          r.add(remove(keys.first, context));
+          widgetlist.add(textInput(
+              icon: Icons.phone,
+              validate: (value) {
+                if (value == '') {
+                  return "الرجاء عدم ترك الحقل فارغ";
+                }
+                if (value.toString().length != 10) {
+                  return 'الرجاء وضع رقم صحيح';
+                }
+                return null;
+              },
+              controller: controllers[0],
+              key: keys.first,
+              context: context,
+              inputType: TextInputType.number));
         }
       },
       builder: (context, state) => Scaffold(
@@ -73,16 +69,15 @@ List<Widget> widgetlist = [];
           title: const Text('إضافة طبيب'),
           backgroundColor: const Color(0xff92cbdf),
           centerTitle: true,
-                        leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: ConditionalBuilder(
           condition: state is! LoadingCities,
@@ -117,7 +112,7 @@ List<Widget> widgetlist = [];
                         ),
                         Expanded(
                             child: textInput(
-                                                  controller: firstNameController,
+                          controller: firstNameController,
                           context: context,
                           inputType: TextInputType.name,
                           validate: (value) {
@@ -531,8 +526,7 @@ List<Widget> widgetlist = [];
                                 if (value == '') {
                                   return "الرجاء عدم ترك الحقل فارغ";
                                 }
-                                if(value.toString().length!=10)
-                                {
+                                if (value.toString().length != 10) {
                                   return 'الرجاء وضع رقم صحيح';
                                 }
                                 return null;
@@ -840,63 +834,67 @@ List<Widget> widgetlist = [];
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       child: ConditionalBuilder(
-                        condition: state is! LoadingCreateDoctor,
-                        fallback:(context)=> const SizedBox(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        builder: (context) {
-                          return MaterialButton(
-                            minWidth: MediaQuery.of(context).size.width * 0.9,
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                if (cubit.selectedGender == null ||
-                                    cubit.selectedSocialStatus == null) {
-                                  if (cubit.selectedGender == null) {
-                                    showToast(
-                                        message: 'الرجاء تحديد جنس الطبيب',
-                                        color: Colors.red);
-                                  }
-                                  if (cubit.selectedSocialStatus == null) {
-                                    showToast(
-                                        message: 'الرجاء تحديد الحالة الاجتماعية',
-                                        color: Colors.red);
-                                  }
-                                } else {
-                                  List<String> numbers = [];
-                                  for (var element in controllers) {
-                                    numbers.add(element.text);
-                                  }
-                                  await cubit.addDoctor(
-                                    firstName: firstNameController.text,
-                                    middleName: middleNameController.text,
-                                    lastName: lastNameController.text,
-                                    email: emailController.text,
-                                    familyMembers: familyMembersController.text==''? null:
-                                    familyMembersController.text,
-                                    nationalNumber: nationalNumberController.text,
-                                    qualifications: qualificationsController.text,
-                                    phoneNumbers: numbers,
-                                 );
-                                }
-                              }
-                            },
-                            child: const Center(
-                              child: Text(
-                                "إضافة",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.white,
+                          condition: state is! LoadingCreateDoctor,
+                          fallback: (context) => const SizedBox(
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
-                      ),
+                          builder: (context) {
+                            return MaterialButton(
+                              minWidth: MediaQuery.of(context).size.width * 0.9,
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  if (cubit.selectedGender == null ||
+                                      cubit.selectedSocialStatus == null) {
+                                    if (cubit.selectedGender == null) {
+                                      showToast(
+                                          message: 'الرجاء تحديد جنس الطبيب',
+                                          color: Colors.red);
+                                    }
+                                    if (cubit.selectedSocialStatus == null) {
+                                      showToast(
+                                          message:
+                                              'الرجاء تحديد الحالة الاجتماعية',
+                                          color: Colors.red);
+                                    }
+                                  } else {
+                                    List<String> numbers = [];
+                                    for (var element in controllers) {
+                                      numbers.add(element.text);
+                                    }
+                                    await cubit.addDoctor(
+                                      firstName: firstNameController.text,
+                                      middleName: middleNameController.text,
+                                      lastName: lastNameController.text,
+                                      email: emailController.text,
+                                      familyMembers:
+                                          familyMembersController.text == ''
+                                              ? null
+                                              : familyMembersController.text,
+                                      nationalNumber:
+                                          nationalNumberController.text,
+                                      qualifications:
+                                          qualificationsController.text,
+                                      phoneNumbers: numbers,
+                                    );
+                                  }
+                                }
+                              },
+                              child: const Center(
+                                child: Text(
+                                  "إضافة",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                     ),
                   ],
                 ),
@@ -909,12 +907,11 @@ List<Widget> widgetlist = [];
   }
 
   Widget remove(Key? key, context) {
-
     return Container(
       alignment: AlignmentDirectional.center,
       height: MediaQuery.of(context).size.height * 0.1,
       child: Visibility(
-        visible: key!=keys.first,
+        visible: key != keys.first,
         child: IconButton(
           onPressed: () {
             var index = widgetlist.indexWhere((element) => element.key == key);
@@ -963,4 +960,3 @@ Widget textInput(
     ),
   );
 }
-

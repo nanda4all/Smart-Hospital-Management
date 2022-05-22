@@ -38,6 +38,8 @@ class _EditPersonalInfoDoctorState extends State<EditPersonalInfoDoctor> {
           showToast(message: state.message, color: Colors.green);
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+        } else if (state is BannedDoctor) {
+          OurCubit.get(context).bannedDoctor(state.message, context);
         } else if (state is SuccesGetPersonalInfo) {
           familyMembersController.text =
               OurCubit.get(context).docInfo[0]['family'].toString();

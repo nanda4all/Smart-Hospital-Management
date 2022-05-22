@@ -15,20 +15,9 @@ class SurgeryForDoctor extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
       listener: (context, state) {
-        if (state is BannedSurgeriesForDoc) {
-                      showToast(message: state.message, color: Colors.red);
-                      Navigator.pop(context);
-                                sharedPreferences.remove('docId');
-                                sharedPreferences.remove('isManager');
-                                sharedPreferences.remove('hoId');
-                                docId = null;
-                                hoId = null;
-                                isManager = false;
-                                isLogin = false;
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/", (Route<dynamic> route) => false);
-
-        }
+      if (state is BannedDoctor) {
+        OurCubit.get(context).bannedDoctor(state.message, context);
+      }
       },
       builder: (context, state) {
         return Scaffold(

@@ -10,12 +10,6 @@ class EmptyPreviewsForDoc extends OurStates {
     required this.message,
   });
 }
-class BannedPreviewsForDoc extends OurStates {
-  String message;
-  BannedPreviewsForDoc({
-    required this.message,
-  });
-}
 
 class SuccesPreviewsForDoc extends OurStates {}
 
@@ -29,24 +23,12 @@ class EmptyPatientForDoc extends OurStates {
     required this.message,
   });
 }
-class BannedPatientForDoc extends OurStates {
-  String message;
-  BannedPatientForDoc({
-    required this.message,
-  });
-}
 
 class LoadingSurgeriesForDoc extends OurStates {}
 
 class EmptySurgeriesForDoc extends OurStates {
   String message;
   EmptySurgeriesForDoc({
-    required this.message,
-  });
-}
-class BannedSurgeriesForDoc extends OurStates {
-  String message;
-  BannedSurgeriesForDoc({
     required this.message,
   });
 }
@@ -63,9 +45,16 @@ class EmptyWorkDaysForDoc extends OurStates {
     required this.message,
   });
 }
-class BannedWorkDaysForDoc extends OurStates {
+class BannedDoctor extends OurStates {
   String message;
-  BannedWorkDaysForDoc({
+  BannedDoctor({
+    required this.message,
+  });
+}
+
+class BannedPatient extends OurStates {
+  String message;
+  BannedPatient({
     required this.message,
   });
 }
@@ -88,11 +77,11 @@ class EmptyFreeTimeForCreatePreviewDoctor extends OurStates {
 
 class SelectedTimeForPreveiw extends OurStates {}
 
-class LoadingCreatePreviewDoctor extends OurStates {}
+class LoadingCreatePreview extends OurStates {}
 
-class SuccessCreatePreviewDoctor extends OurStates {
+class SuccessCreatePreview extends OurStates {
   String message;
-  SuccessCreatePreviewDoctor({
+  SuccessCreatePreview({
     required this.message,
   });
 }
@@ -327,12 +316,6 @@ class SuccessCreateSurgeryDoctor extends OurStates {
     required this.message,
   });
 }
-class BannedCreateSurgeryDoctor extends OurStates {
-  String message;
-  BannedCreateSurgeryDoctor({
-    required this.message,
-  });
-}
 
 class SelectedHourForSurgery extends OurStates {}
 
@@ -424,5 +407,13 @@ class LoadingDisplayDoctorForCreatePreview extends OurStates {}
 
 class SuccessDisplayDoctorForCreatePreview extends OurStates {}
 
+class LoadingAddExam extends OurStates {}
+
+class SuccessAddExam extends OurStates {
+  String message;
+  SuccessAddExam({
+    required this.message,
+  });
+}
 
 

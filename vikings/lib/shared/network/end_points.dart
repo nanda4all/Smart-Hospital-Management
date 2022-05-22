@@ -6,11 +6,11 @@ const getWorkDays ='api/Employee/GetWorkDays';
 const validateDateForDoctorPreview ='api/Employee/ValidateDate';
 const validateTimeForDoctorPreview ='api/Employee/CheckTime';
 const createPreviewDoctor ='api/Employee/CreatePreview';
+const createPreviewPatient ='api/Patient/CreatePreview';
 const uploadTestResults ='api/Employee/UploadMultipleTests';
 const getTestTypes ='api/Employee/TestType';
 const displayTests ='api/Employee/DisplayTest';
 const showMedicalDetailsForDoctor ='api/Employee/GetMedicalDetails';
-
 const getRayTypes ='api/Employee/RayType';
 const displayRays ='api/Employee/DisplayRays';
 const uploadRayResults ='api/Employee/UploadMultipleRays';
@@ -49,3 +49,4 @@ const validateDateForPatientPreview = 'api/Patient/ValidateDateForPatient';
 const validateTimeForPatientPreview = 'api/Patient/CheckTimeForPatient';
 const showDoctorForCreatePreview = 'api/Patient/DisplayDoctorsForCreatePreview';
 const showMedicalDetailsForUpdate = 'api/Employee/GetMedicalDetailsForUpdate';
+const addExam ='api/Employee/AddExamination';

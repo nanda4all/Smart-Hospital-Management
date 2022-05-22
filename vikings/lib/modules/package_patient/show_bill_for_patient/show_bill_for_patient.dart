@@ -13,7 +13,11 @@ class ShowBillForPatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<OurCubit, OurStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is BannedPatient) {
+          OurCubit.get(context).bannedPatient(state.message, context);
+        }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
