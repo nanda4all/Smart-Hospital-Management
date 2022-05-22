@@ -1,0 +1,53 @@
+﻿@model IEnumerable<LastHMS2.ShowClasses.ShowMedicalTest>
+
+@{
+    ViewData["Title"] = "ShowMedicalTestForPatient";
+}
+
+<h1>ShowMedicalTestForPatient</h1>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.Medical_Detail_Id">Create New</a>
+</p>
+<h1>@TempData["Empity"]</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.Test_Type)
+            </th>
+            <th>
+                Image
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+          
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Test_Type)
+                </td>
+                <td>
+                    <button><img src="~/Medical_Test_Result/@item.Result" style="height:50px;width:50px" /></button>
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Test_Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Test_Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Test_Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

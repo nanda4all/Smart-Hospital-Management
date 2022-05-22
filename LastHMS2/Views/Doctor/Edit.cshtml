@@ -1,0 +1,90 @@
+﻿@model LastHMS2.Models.Doctor
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@section Styles{
+    <link href="~/Medicio2/Edit.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Doctor_Id" />
+
+            <div class="form-group">
+                <label asp-for="Doctor_Family_Members" class="control-label"></label>
+                <input asp-for="Doctor_Family_Members" class="form-control" min="0" />
+                <span asp-validation-for="Doctor_Family_Members" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Doctor_Qualifications" class="control-label"></label>
+                <input asp-for="Doctor_Qualifications" class="form-control" />
+                <span asp-validation-for="Doctor_Qualifications" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Doctor_Social_Status" class="control-label"></label>
+                <select asp-for="Doctor_Social_Status" class="form-control">
+                    <option value="عازب/ة">عازب/ة</option>
+                    <option value="متزوج/ة">متزوج/ة</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">City</label>
+                <select id="City" asp-for="Doctor_Birth_Place" asp-items="@ViewBag.Cities" class="form-control">
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Area_Id" class="control-label"></label>
+                <select id="Area" asp-for="Area_Id" asp-items="@ViewBag.Areas" class="form-control">
+                </select>
+            </div>
+
+            <input type="hidden" class="form-check-input" asp-for="Active" />
+
+
+            <input type="hidden" asp-for="Department_Id" />
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+
+        $("#City").change(function () {
+            var selectedCity = $("#City").val();
+            var AreasSelect = $("#Area");
+            AreasSelect.empty();
+            if (selectedCity != null && selectedCity != "") {
+                $.getJSON('@Url.Action("GetAreas")', { CityId: selectedCity }, function (Areas) {
+                    if (Areas != null && !jQuery.isEmptyObject(Areas)) {
+                        AreasSelect.append($('<option/>', { value: null, text: "اختر المنطقة" }));
+
+                        $.each(Areas, function (index, area) {
+                           AreasSelect.append($('<option/>', { value: area.value, text: area.text }));
+                        });
+                    };
+                });
+
+            }
+        });
+    });
+    </script>
+
+
+}

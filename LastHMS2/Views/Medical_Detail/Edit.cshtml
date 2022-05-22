@@ -1,0 +1,42 @@
+﻿@model LastHMS2.Models.Medical_Detail
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@section Styles{
+    <link href="~/Medicio2/Edit.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Medical_Details_Id" />
+            <div class="form-group">
+                <label asp-for="MD_Patient_Blood_Type" class="control-label"></label>
+                <input asp-for="MD_Patient_Blood_Type" class="form-control" />
+                <span asp-validation-for="MD_Patient_Blood_Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="control-label"></label>
+                <input asp-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="form-control" />
+                <span asp-validation-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MD_Patient_Special_Needs" class="control-label"></label>
+                <input asp-for="MD_Patient_Special_Needs" class="form-control" />
+                <span asp-validation-for="MD_Patient_Special_Needs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

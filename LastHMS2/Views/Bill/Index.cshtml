@@ -1,0 +1,95 @@
+﻿@model IEnumerable<LastHMS2.Models.Bill>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link href="~/medicio2/delete.css" rel="stylesheet" /> }
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Examination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Surgeries)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Rays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Medical_Test)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Room_Service)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Medication)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paid)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int i = 0; }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Examination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Surgeries)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Rays)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Medical_Test)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Room_Service)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Medication)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paid)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Bill_Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Bill_Id">Details</a> |
+                    @{
+                        string confirm = "confirm" + i;
+                        string cancel = "cancel" + i;
+                        string delete = "delete" + i;
+                    }
+                    <a id="@delete" class="btn delete_btn" onclick="Confirm(@i)">حذف</a>
+                    <a id="@cancel" class="btn Cancel_btn" onclick="Cancel(@i)">إلغاء</a>
+                    <a class="btn Confirm_btn" asp-action="Delete" asp-route-id="@item.Bill_Id" id="@confirm">تأكيد</a>
+                    @{i++;}
+                    <a>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/ConfirmDelete.js"></script>
+}

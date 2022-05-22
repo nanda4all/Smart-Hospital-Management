@@ -1,0 +1,188 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
+    <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Medical_Test_Result\" />
+    <Folder Include="wwwroot\External_Records_Details\" />
+    <Folder Include="wwwroot\Ray_Result\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\firebase\src\getToken.js" />
+    <None Include="wwwroot\firebase\src\index.html" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\CODEOWNERS" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\CONTRIBUTING.md" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\dependabot.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\ISSUE_TEMPLATE\bug_report.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\ISSUE_TEMPLATE\config.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\ISSUE_TEMPLATE\feature_request.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\release-drafter.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\SUPPORT.md" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\browserstack.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\bundlewatch.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\codeql.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\css.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\docs.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\js.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\lint.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\node-sass.yml" />
+    <None Include="wwwroot\Medicio2\assets\bootstrap-5.1.3\bootstrap-5.1.3\.github\workflows\release-notes.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Bill\ShowBillForPatient.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Department\HoDepartments.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\DeptManagers.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\DetailsForDeptMgr.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\DisplayDoctrosByDeptId.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\EditDeptManager.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\ShowActiveDoctorsForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Doctor\ShowUnActiveDoctorsForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Employee\DisplayNurses.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Employee\HoEmployees.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Employee\ShowActiveEmployeesForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Employee\ShowUnActiveEmployeesForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Medical_Detail\ShowMedicalDetailsForDoctor.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\DetailsForDoctor.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\DisplayPatientsByName.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\DisplayPatientsByRoomNumber.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\DoctorIndex.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\HoPatientsForPreview.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\ShowActivePatientsForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Patient\ShowUnActivePatientsForIT.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Preview\CreateForPatient.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Preview\DeptDoctorsForPatient.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Room\AvailableRooms.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Room\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Room\DisplayRooms.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery\DisplayEmptySurgeryRooms.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery\DisplayPatients.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery\DisplaySurgeries.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery_Room\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Surgery_Room\DisplaySurgeryRooms.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Work_Days\GetWorkDays.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Work_Days\ShowDoctorWorkDays.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,202 @@
+﻿@model LastHMS2.Models.Medical_Detail
+
+@{
+    ViewData["Title"] = "Create";
+}
+@section Styles{
+    <link href="~/Medicio2/Create.css" rel="stylesheet" />
+}
+<div style="width:1px;height:1px; overflow:scroll; visibility:hidden">
+    <ul>
+        @{
+            List<LastHMS2.Extra_Tables.Disease_Type> disease_Types = ViewBag.DiseasesTypes;
+
+            for (int i = 0; i < disease_Types.Count; i++)
+            {
+                <li class="Disease_Type_Id">@disease_Types[i].Disease_Type_Id</li>
+                <li class="Disease_Type_Name">@disease_Types[i].Disease_Type_Name</li>
+            }
+        }
+    </ul>
+
+</div>
+<h4>Medical_Detail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" asp-for="Pa_Id" />
+            <input type="hidden" name="HoId" value="@ViewBag.DocId" />
+            <input type="hidden" name="DocId" value="@ViewBag.HoId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MD_Patient_Blood_Type" class="control-label"></label>
+                <input asp-for="MD_Patient_Blood_Type" class="form-control" />
+                <span asp-validation-for="MD_Patient_Blood_Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="control-label"></label>
+                <input asp-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="form-control" />
+                <span asp-validation-for="MD_Patient_Treatment_Plans_And_Daily_Supplements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MD_Patient_Special_Needs" class="control-label"></label>
+                <input asp-for="MD_Patient_Special_Needs" class="form-control" />
+                <span asp-validation-for="MD_Patient_Special_Needs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Allergies</label>
+                <select name="Allergies" class="form-control" multiple>
+                    @foreach (var item in @ViewBag.Allergies as List<LastHMS2.Extra_Tables.Allergy>)
+                    {
+                        <option value="@item.Allergy_Id"> @item.Allergy_Name</option>
+                    }
+                </select>
+            </div>
+
+            <div id="div0">
+                <div class="form-group">
+                    <label for="Diseases_Type" class="control-label">Diseases Type</label>
+                    <select id="Diseases_Type0" onchange="ChangeSelect(0)" class="form-control" name="Diseases_Type" asp-items="@ViewBag.Diseases_Type">
+                    </select>
+                </div>
+                <div>
+                    <label for="Diseases" class="control-label">Diseases</label>
+                    <select id="Diseases0" name="Diseases" asp-items="@ViewBag.Diseases" class="form-control">
+                    </select>
+                    <label for="Chronic" class="control-label">Chronic Disease</label>
+                    <input id="chr0" type="checkbox" onchange="changeChk(0)" />
+                    <input id="Chronic0" type="hidden" name="Chronic" value="false" />
+                    <label for="Family" class="control-label">Family Health History</label>
+                    <input id="fam0" type="checkbox" onchange="changeChk1(0)" />
+                    <input id="Family0" type="hidden" name="Family" value="false" />
+                </div>
+                <span id="span0"></span>
+                <input type="button" onclick="Add(this,1,0)" value="Add" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<a asp-controller="Doctor" asp-action="Master" asp-route-id="@ViewBag.DocId" asp-route-HoId="@ViewBag.HoId">Back To Master Page</a>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    function changeChk(num)
+    {
+        var chr = document.getElementById('chr' + num);
+
+        if (chr.checked == true) {
+            document.getElementById('Chronic' + num).value = "true";
+        }
+        else { document.getElementById('Chronic' + num).value = "false";}
+
+    }
+    function changeChk1(num)
+    {
+
+        var fam = document.getElementById('fam' + num);
+        if (fam.checked == true) {
+            document.getElementById('Family' + num).value="true";
+        }
+        else { document.getElementById('Family' + num).value = "false"; }
+    }
+
+    var count = 1;
+    function Delete(divNum) {
+        count--;
+        if (count == 1 || divNum == count) {
+            var span = document.getElementById('span' + (count-1));
+            span.insertAdjacentHTML('afterend', '<input type="button" onclick="Add(this,1,0)" value="Add" />');
+        }
+        var div = document.getElementById("div"+ divNum);
+        div.parentNode.removeChild(div);
+        }
+
+    function Add(btn, num, divNum) {
+            count++;
+            if (num < 15) {
+                num = num + 1;
+                divNum = divNum + 1;
+                var attribute = document.createAttribute("style");
+                attribute.value = "display:none";
+                btn.setAttributeNodeNS(attribute);
+                var div = document.getElementById('div' + (divNum-1));
+                var DiseaseTypesIds = document.getElementsByClassName('Disease_Type_Id');
+                var DiseaseTypesNames = document.getElementsByClassName('Disease_Type_Name');
+                var string1 = "";
+                for (var i = 0; i < DiseaseTypesIds.length; i++) {
+                    string1 += '<option value="' + DiseaseTypesIds[i].innerHTML + '">' + DiseaseTypesNames[i].innerHTML + '</option>';
+                }
+                var valueToAdd = '<div id="div'+ divNum +'">'+
+                    '<div class="form-group" > ' +
+                    ' <label for="Diseases_Type" class="control-label">Diseases_Type</label>' +
+                    ' <select id="Diseases_Type' + divNum + '" onchange="ChangeSelect(' + divNum + ')"  name="Diseases_Type" class="form-control">' +
+                    string1 +
+                    '</select>' +
+                    ' </div>' +
+                    '<div class="form-group">' +
+                    ' <label for="Diseases" class="control-label">Diseases</label>' +
+                    '<select id="Diseases' + divNum + '" name="Diseases" class="form-control" >' +
+                    '</select> ' +
+                    '<label for="Chronic" class="control-label">Chronic</label>' +
+                    '<input id="chr' + divNum + '" type="checkbox" onchange="changeChk(' + divNum + ')"  />' +
+                    '<input id="Chronic' + divNum + '" type="hidden" name="Chronic" value="false" />'+
+                    ' <label for="Family" class="control-label">Family Health History</label>' +
+                    '<input id="fam' + divNum + '" type="checkbox" onchange="changeChk1(' + divNum + ')"  />' +
+                    '<input id="Family' + divNum + '" type="hidden" name="Family" value="false" />'+
+                    '</div>' + '<input type="button" onclick="Delete(' + divNum + ')" value="Delete" /> ' +
+                    '<span id="span' + divNum + '"></span>' +
+                    '<input type="button" onclick="Add(this,' + num + ',' + divNum + ')" value="Add" />' +
+                    '</div> ';
+                div.insertAdjacentHTML('afterend', valueToAdd);
+
+            }
+
+        }
+
+        function ChangeSelect(num) {
+            /*$("#Diseases_Type"+num).change(function () {*/
+                var selectedDiseases_Type = $("#Diseases_Type" + num).val();
+                var DiseasesSelect = $("#Diseases" + num);
+                DiseasesSelect.empty();
+                if (selectedDiseases_Type != null && selectedDiseases_Type != "") {
+                    $.getJSON('@Url.Action("GetDiseases")', { Diseases_TypeId: selectedDiseases_Type }, function (Diseases) {
+                        if (Diseases != null && !jQuery.isEmptyObject(Diseases)) {
+                            DiseasesSelect.append($('<option/>', { value: null, text: "اختر نوع المرض" }));
+
+                            $.each(Diseases, function (index, Disease) {
+                                DiseasesSelect.append($('<option/>', { value: Disease.value, text: Disease.text }));
+                            });
+                        };
+                    });
+
+                }
+
+        }
+         @*$(document).ready(function () {
+
+            $("#Diseases_Type").change(function () {
+                var selectedDiseases_Type = $("#Diseases_Type").val();
+                var DiseasesSelect = $("#Diseases");
+                DiseasesSelect.empty();
+                if (selectedDiseases_Type != null && selectedDiseases_Type != "") {
+                    $.getJSON('@Url.Action("GetDiseases")', { Diseases_TypeId: selectedDiseases_Type }, function (Diseases) {
+                        if (Diseases != null && !jQuery.isEmptyObject(Diseases)) {
+                            DiseasesSelect.append($('<option/>', { value: null, text: "اختر نوع المرض" }));
+
+                            $.each(Diseases, function (index, Disease) {
+                                DiseasesSelect.append($('<option/>', { value: Disease.value, text: Disease.text }));
+                            });
+                        };
+                    });
+
+                }
+            });
+        });*@
+
+    </script>
+
+}

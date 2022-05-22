@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+@section Styles{
+    <link href="~/Medicio2/Create.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <h1>@TempData["ErrorMessage"]</h1>
+            <div id="div0">
+                <div class="form-group">
+                    <label for="Day" class="control-label"></label>
+                    <select name="Day" class="form-control">
+                        <option selected="selected" value="0"> الأحد</option>
+                        <option value="1"> الأثنين</option>
+                        <option value="2"> الثلاثاء</option>
+                        <option value="3"> الأربعاء</option>
+                        <option value="4"> الخميس</option>
+                        <option value="5"> الجمعة</option>
+                        <option value="6"> السبت</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Start_Hour" class="control-label"></label>
+                    <input type="time" name="sdate" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label for="End_Hour" class="control-label"></label>
+                    <input type="time" name="edate" class="form-control" />
+                </div>
+                <span id="span0"></span>
+                <input type="button" onclick="Add(this,1,0)" value="Add" />
+            </div>
+
+            <input type="hidden" name="DoctorId" value="@ViewBag.DoctorId" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        var count = 1;
+        function Delete(divNum) {
+            count--;
+            if (count == 1 || divNum == count) {
+                var span = document.getElementById('span' + (count - 1));
+                span.insertAdjacentHTML('afterend', '<input type="button" onclick="Add(this,1,0)" value="Add" />');
+            }
+            var div = document.getElementById("div" + divNum);
+            div.parentNode.removeChild(div);
+        }
+        function Add(btn, num, divNum) {
+            count++;
+            if (num < 7) {
+                num = num + 1;
+                divNum = divNum + 1;
+                var attribute = document.createAttribute("style");
+                attribute.value = "display:none";
+                btn.setAttributeNodeNS(attribute);
+                var div = document.getElementById('div' + (divNum - 1));
+                var valueToAdd = '<div id="div' + divNum + '">' +
+                    '<div class="form-group">' +
+                    '<label for= "Day" class= "control-label" ></label>' +
+                    '<select name="Day" class="form-control">' +
+                    '<option selected="selected" value="0" > الأحد</option>' +
+                    '<option value="1" > الأثنين</option>' +
+                    '<option value="2" > الثلاثاء</option>' +
+                    '<option value="3" > الأربعاء</option>' +
+                    '<option value="4" > الخميس</option>' +
+                    '<option value="5" > الجمعة</option>' +
+                    '<option value="6" > السبت</option>' +
+                    ' </select>' +
+                    '</div >' +
+                    '<div class="form-group">' +
+                    '<label for="Start_Hour" class="control-label"></label>' +
+                    '<input type="time" name="sdate" class="form-control" />' +
+
+                    '</div>' +
+                    '<div class="form-group">' +
+                    ' <label for="End_Hour" class="control-label"></label>' +
+                    '<input type="time" name="edate" class="form-control" />' +
+                    ' </div>' + '<input type="button" onclick="Delete(' + divNum + ')" value="Delete" /> ' +
+                    '<span id="span' + divNum + '"></span>' +
+                    '<input type="button" onclick="Add(this,' + num + ',' + divNum + ')" value="Add" />' +
+                    '</div>';
+
+                div.insertAdjacentHTML('afterend', valueToAdd)
+            }
+
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+@*'<div class="form-group">
+        ' +
+        '<label asp-for="Day" class="control-label"></label>' +
+        '<select asp-for="Day" asp-items="@@Html.GetEnumSelectList<LastHMS2.Enums.WeekDays>()" class="form-control">
+            ' +
+            '
+        </select>' +
+        ' <span asp-validation-for="Day" class="text-danger"></span>' +
+        '
+    </div>' +*@

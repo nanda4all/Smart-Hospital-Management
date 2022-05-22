@@ -1,0 +1,119 @@
+﻿@model IEnumerable<LastHMS2.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_First_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Middle_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Last_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_National_Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_X_Y)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Family_Members)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Job)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Qualifications)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Social_Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Birth_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee_Hire_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_First_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Middle_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Last_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_National_Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_X_Y)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Family_Members)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Job)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Qualifications)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Social_Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Birth_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Hire_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Employee_Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Employee_Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Employee_Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,83 @@
+﻿@model LastHMS2.Models.Medical_Detail
+
+@{
+    ViewData["Title"] = "ShowMedicalDetailsForPatient";
+}
+
+<h1>ShowMedicalDetailsForPatient</h1>
+<div class="FullPage">
+    <div class="div1">
+        <div class="details">
+            <label>زمرة الدم : </label>
+            <input type="text" value="@Model.MD_Patient_Blood_Type">
+        </div>
+        <div class="details">
+            <label>الإحتياجات الخاصة :</label>
+            <textarea rows="2" cols="20" placeholder="الإحتياجات الخاصة">@Model.MD_Patient_Special_Needs</textarea>
+        </div>
+        <div class="details">
+            <label>الخطة العلاجية :</label>
+            <textarea rows="2" cols="20" placeholder="الخطة العلاجية">@Model.MD_Patient_Treatment_Plans_And_Daily_Supplements</textarea>
+        </div>
+    </div>
+    @*<div class="div2">
+        <label>التشخيصات :</label>
+        @foreach (var item in ViewBag.Examination as List<LastHMS2.Extra_Tables.Examination_Records>)
+        {
+            <p>@item.Details</p>
+        }
+    </div>*@
+    <div class="div3">
+        <table>
+
+            <tr>
+                <th>الحساسيات</th>
+            </tr>
+
+            @foreach (var item in ViewBag.allergies as List<LastHMS2.Extra_Tables.Allergy>)
+            {
+                <tr>
+                    @item.Allergy_Name
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="div4">
+        <table>
+            <tr>
+                <th>الأمراض المزمنة</th>
+                <td>إسم المرض</td>
+            </tr>
+            @foreach (var item in ViewBag.chronic_diseases as List<LastHMS2.Extra_Tables.Disease>)
+            {
+                <tr>
+                    @item.Disease_Name
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="div5">
+        <table>
+            <tr>
+                <th>الأمراض العائلية</th>
+                <td>إسم المرض</td>
+            </tr>
+            @foreach (var item in ViewBag.family_diseases as List<LastHMS2.Extra_Tables.Disease>)
+            {
+                <tr>
+                    @item.Disease_Name
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="btn_div">
+        <button>الملفات الخارجية</button>
+        <button>الأشعة</button>
+        <button>اتحاليل</button>
+    </div>
+</div>
+<a asp-controller="Doctor" asp-action="Master" asp-route-id="@ViewBag.DocId" asp-route-HoId="@ViewBag.HoId">Back To Master Page</a>

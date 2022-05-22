@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LastHMS2.Models.Work_Days>
+
+@{
+    ViewData["Title"] = "GetWorkDays";
+}
+@section Styles{
+    <link href="~/Medicio2/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Medicio2/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Medicio2/create.css" rel="stylesheet" />
+    <style>
+        html {
+            height: 100vh;
+        }
+    </style>
+}
+<div class="All_form" style="width: 92%; position: relative; right: 22%;">
+    <h2>@ViewBag.DoctorName</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Start_Hour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.End_Hour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Day)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Start_Hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.End_Hour)
+                    </td>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Day)
+                    </th>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-controller="Doctor" asp-action="Master" asp-route-id="@ViewBag.DocId" asp-route-HoId="@ViewBag.HoId" style="position: relative; left: 44%;">Back to Master Page</a>
+@section Scripts{
+    <script src="~/Medicio2/dashborde/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Medicio2/dashborde/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Medicio2/dashborde/vendor/jquery-easing/jquery.easing.min.js"></script>
+}

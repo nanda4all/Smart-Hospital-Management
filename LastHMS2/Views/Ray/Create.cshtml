@@ -1,0 +1,45 @@
+﻿@model LastHMS2.Models.Ray
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link href="~/Medicio2/Create.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ray_Date" class="control-label"></label>
+                <input asp-for="Ray_Date" class="form-control" />
+                <span asp-validation-for="Ray_Date" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Ray_Result" class="control-label"></label>
+                    <input asp-for="Ray_Result" class="form-control" />
+                    <span asp-validation-for="Ray_Result" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="Ray_Type_Id" class="control-label"></label>
+                <select asp-for="Ray_Type_Id" class="form-control" asp-items="ViewBag.Ray_Type_Id"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medical_Detail_Id" class="control-label"></label>
+                <select asp-for="Medical_Detail_Id" class="form-control" asp-items="ViewBag.Medical_Detail_Id"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

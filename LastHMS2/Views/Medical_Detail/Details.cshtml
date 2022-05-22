@@ -1,0 +1,36 @@
+﻿@model LastHMS2.Models.Medical_Detail
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Medical_Detail</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MD_Patient_Blood_Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MD_Patient_Blood_Type)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MD_Patient_Treatment_Plans_And_Daily_Supplements)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MD_Patient_Treatment_Plans_And_Daily_Supplements)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MD_Patient_Special_Needs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MD_Patient_Special_Needs)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Medical_Details_Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
